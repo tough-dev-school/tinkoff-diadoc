@@ -1,0 +1,92 @@
+[project]
+name = "bank-to-edo"
+version = "0.1.0-dev"
+dependencies = [
+    "httpx",
+    "python-dotenv",
+    "pydantic",
+    "schedule",
+]
+
+
+[project.optional-dependencies]
+dev = [
+    "ipython",
+
+    "pytest-deadfixtures",
+    "pytest-env",
+    "pytest-mock",
+    "pytest-httpx",
+    "pytest-randomly",
+    "pytest-freezegun",
+
+    "black",
+    "mixer",
+
+    "dotenv-linter",
+
+    "flake8-absolute-import",
+    "flake8-aaa",
+    "flake8-black",
+    "flake8-bugbear",
+    "flake8-cognitive-complexity",
+    "flake8-eradicate",
+    "flake8-isort",
+    "flake8-fixme",
+    "flake8-multiline-containers",
+    "flake8-pep3101",
+    "flake8-pie",
+    "flake8-print",
+    "flake8-printf-formatting",
+    "flake8-pytest",
+    "flake8-pytest-style",
+    "flake8-quotes",
+    "flake8-simplify",
+    "flake8-todo",
+    "flake8-use-fstring",
+    "flake8-variables-names",
+    "flake8-walrus",
+    "flake8-pyproject",
+
+    "mypy",
+]
+
+
+[tool.flake8]
+max-line-length = 160
+inline-quotes = "\""
+ignore = [
+    "E501",  # Line too long
+    "E265",  # Block comments should have one space before the pound sign (#) and the comment itself
+    "F811",  # Redefinition of unused name from line n
+    "PT001",  # Use @pytest.fixture() over @pytest.fixture
+    "SIM102",  # Use a single if-statement instead of nested if-statements
+    "SIM113",  # Use enumerate instead of manually incrementing a counter
+    "E203",  # whitespace before ':', disabled for black purposes https://black.readthedocs.io/en/stable/the_black_code_style/current_style.html#slices
+]
+exclude = [
+    ".git",
+    "__pycache__",
+]
+
+
+[tool.isort]
+profile = "google"
+line_length = 160
+extra_standard_library = ["pytest"]
+sections = ["FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
+use_parentheses = true
+include_trailing_comma = true
+multi_line_output = 3
+
+
+[tool.black]
+line_length = 160
+
+
+[tool.pytest.ini_options]
+python_files=["test*.py"]
+testpaths=["tests"]
+filterwarnings=[
+    "ignore:distutils Version classes are deprecated. Use packaging.version instead.:DeprecationWarning:pytest_freezegun:17",
+]
