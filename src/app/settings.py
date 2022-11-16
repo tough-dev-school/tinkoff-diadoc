@@ -6,6 +6,9 @@ from pydantic import BaseSettings
 class Settings(BaseSettings):
     DEBUG: bool = False
 
+    TINKOFF_BUSINESS_DEMO_MODE: bool = False
+    TINKOFF_BUSINESS_TOKEN: str
+
     class Config:
         case_sensitive = True
         env_file = ".env"
