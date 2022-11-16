@@ -1,0 +1,91 @@
+{
+    "Organizations": [
+        {
+            "OrgIdGuid": "229c4201-3680-4317-8a19-68d4748c0cd5",
+            "OrgId": "229c4201-3680-4317-8a19-68d4748c0cd5",
+            "Inn": "123456789012",
+            "Kpp": "",
+            "FullName": "Королевич Василиса Евгеньевна",
+            "ShortName": "Королевич В. Е.",
+            "JoinedDiadocTreaty": true,
+            "Boxes": [
+                {
+                    "BoxId": "26af83e5fabf480595ed7ef0fc16a4b8@diadoc.ru",
+                    "BoxIdGuid": "26af83e5-fabf-4805-95ed-7ef0fc16a4b8",
+                    "Title": "Королевич Василиса Евгеньевна",
+                    "InvoiceFormatVersion": "v5_02",
+                    "EncryptedDocumentsAllowed": false
+                }
+            ],
+            "Ogrn": "773501166447",
+            "FnsParticipantId": "2BM-712345678901-2019091021235678901200000000",
+            "Address": {
+                "RussianAddress": {
+                    "Region": "77",
+                    "City": "Москва",
+                    "Street": "Сахарова",
+                    "Building": "11",
+                    "Apartment": "10"
+                },
+                "AddressCode": ""
+            },
+            "FnsRegistrationDate": "10.09.2019",
+            "Departments": [],
+            "IfnsCode": "7104",
+            "IsPilot": false,
+            "IsActive": true,
+            "IsTest": false,
+            "IsBranch": false,
+            "IsRoaming": false,
+            "IsEmployee": true,
+            "InvitationCount": 0,
+            "SearchCount": 0,
+            "Sociability": "AllOrganizations",
+            "IsForeign": false,
+            "HasCertificateToSign": true
+        },
+        {
+            "OrgIdGuid": "aaddf4f0-6c13-4ddb-baf3-ad2265995365",
+            "OrgId": "aaddf4f0-6c13-4ddb-baf3-ad2265995365",
+            "Inn": "7744001499",
+            "Kpp": "997950001",
+            "FullName": "Общество с ограниченной ответственностью \"Рога и Рыльца\"",
+            "ShortName": "ООО \"Рога и рыльца\"",
+            "JoinedDiadocTreaty": true,
+            "Boxes": [
+                {
+                    "BoxId": "8561678b256a4d51a96abf255220867b@diadoc.ru",
+                    "BoxIdGuid": "8561678b-256a-4d51-a96a-bf255220867b",
+                    "Title": "ООО \"Рога и рыльца\"",
+                    "InvoiceFormatVersion": "v5_02",
+                    "EncryptedDocumentsAllowed": false
+                }
+            ],
+            "Ogrn": "1027700188110",
+            "FnsParticipantId": "2AL-E872DD3F-8AD5-4706-A00A-A0DE8F700103-00001",
+            "Address": {
+                "RussianAddress": {
+                    "ZipCode": "117420",
+                    "Region": "77",
+                    "Street": "ул Намёткина",
+                    "Building": "16",
+                    "Block": "1"
+                },
+                "AddressCode": ""
+            },
+            "Departments": [],
+            "IfnsCode": "7728",
+            "IsPilot": false,
+            "IsActive": true,
+            "IsTest": false,
+            "IsBranch": false,
+            "IsRoaming": true,
+            "IsEmployee": false,
+            "InvitationCount": 0,
+            "SearchCount": 0,
+            "Sociability": "AllOrganizations",
+            "IsForeign": false,
+            "HasCertificateToSign": true
+        }
+    ]
+}

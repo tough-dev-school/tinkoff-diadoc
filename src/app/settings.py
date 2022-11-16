@@ -9,6 +9,10 @@ class Settings(BaseSettings):
     TINKOFF_BUSINESS_DEMO_MODE: bool = False
     TINKOFF_BUSINESS_TOKEN: str
 
+    DIADOC_CLIENT_ID: str
+    DIADOC_LOGIN: str
+    DIADOC_PASSWORD: str
+
     class Config:
         case_sensitive = True
         env_file = ".env"
