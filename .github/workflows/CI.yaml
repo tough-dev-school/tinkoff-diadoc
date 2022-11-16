@@ -1,0 +1,38 @@
+---
+name: CI
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4
+        id: setup-python
+        with:
+          python-version-file: '.python-version'
+
+      - name: Install dependencies
+        run: |
+          python -m venv venv
+          . venv/bin/activate
+          pip install --upgrade pip pip-tools
+          pip-sync requirements.txt dev-requirements.txt
+
+      - name: Set environments
+        run: cp .env.example ./src/.env
+
+      - name: Run the linter
+        run: |
+          . venv/bin/activate
+          make lint
+
+      - name: Run the tests
+        run: |
+          . venv/bin/activate
+          make test
