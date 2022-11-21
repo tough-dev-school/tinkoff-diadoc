@@ -1,0 +1,22 @@
+[
+    {
+        "accountNumber": "40802678901234567890",
+        "currency": "643",
+        "balance": {
+            "otb": 45089,
+            "authorized": 0,
+            "pendingPayments": 0,
+            "pendingRequisitions": 0
+        }
+    },
+    {
+        "accountNumber": "100500",
+        "currency": "643",
+        "balance": {
+            "otb": 450700,
+            "authorized": 60,
+            "pendingPayments": 10,
+            "pendingRequisitions": 0
+        }
+    }
+]

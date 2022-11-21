@@ -1,16 +1,11 @@
 from typing import Any
 
-from app.settings import get_settings
 from diadoc.http import DiadocHTTP
 
 
 class DiadocClient:
     def __init__(self) -> None:
-        self.http = DiadocHTTP(
-            diadoc_login=get_settings().DIADOC_LOGIN,
-            diadoc_password=get_settings().DIADOC_PASSWORD,
-            diadoc_client_id=get_settings().DIADOC_CLIENT_ID,
-        )
+        self.http = DiadocHTTP()
 
     def get_my_organization_ids(self) -> list[str]:
         organizations = self.http.get("GetMyOrganizations")["Organizations"]  # type: ignore

@@ -1,21 +1,20 @@
-from dataclasses import dataclass
 from functools import cached_property
 import json
+import os
 from typing import Any, ClassVar
 from urllib.parse import urljoin
 
+from dotenv import load_dotenv
 import httpx
 
 from app.types import SimpleJSONType
 from diadoc.exceptions import DiadocHTTPException
 
+load_dotenv()
 
-@dataclass
+
 class DiadocHTTP:
     diadoc_base_url: ClassVar[str] = "https://diadoc-api.kontur.ru/"
-    diadoc_login: str
-    diadoc_password: str
-    diadoc_client_id: str
 
     @cached_property
     def headers(self) -> dict[str, str]:
@@ -79,7 +78,7 @@ class DiadocHTTP:
         headers: dict[str, Any] | None = None,
         params: dict[str, Any] | None = None,
         payload: dict[str, Any] | None = None,
-        expected_status_code: int = 201,
+        expected_status_code: int = 200,  # diadoc return 200 on POST
         expects_json: bool = True,
     ) -> SimpleJSONType | str:
         return self.request(
@@ -99,8 +98,15 @@ class DiadocHTTP:
         return {
             "Accept": "application/json",
             "Content-Type": "application/json",
-            "Authorization": f"DiadocAuth ddauth_api_client_id={self.diadoc_client_id}",
+            "Authorization": f'DiadocAuth ddauth_api_client_id={os.getenv("DIADOC_CLIENT_ID")}',
         }
+
+    def get_token(self) -> str:
+        payload = {
+            "login": os.getenv("DIADOC_LOGIN"),
+            "password": os.getenv("DIADOC_PASSWORD"),
+        }
+        return self.post(url="/v3/Authenticate?type=password", headers=self.get_base_headers(), payload=payload, expects_json=False)  # type: ignore
 
     def raise_if_error_occurred(self, response: httpx.Response, expected_status_code: int) -> None:
         if response.status_code != expected_status_code:
@@ -111,15 +117,3 @@ class DiadocHTTP:
             return response.json()
         except json.JSONDecodeError as decode_error:
             raise DiadocHTTPException(f"JSON decode error {decode_error} fetching diadoc resource '{response.url}, {response.text}'")
-
-    def get_token(self) -> str:
-        return self.post(  # type: ignore
-            url="/v3/Authenticate?type=password",
-            headers=self.get_base_headers(),
-            payload={
-                "login": self.diadoc_login,
-                "password": self.diadoc_password,
-            },
-            expected_status_code=200,
-            expects_json=False,
-        )

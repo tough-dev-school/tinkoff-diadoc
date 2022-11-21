@@ -7,11 +7,7 @@ from diadoc.http import DiadocHTTP
 
 @pytest.fixture
 def http():
-    return DiadocHTTP(
-        diadoc_login="email@example.com",
-        diadoc_password="PASS123",
-        diadoc_client_id="API-DIADIC-CLIENT-ID",
-    )
+    return DiadocHTTP()
 
 
 @pytest.fixture
@@ -62,7 +58,7 @@ def test_get_base_headers(http):
     assert base_headers == {
         "Accept": "application/json",
         "Content-Type": "application/json",
-        "Authorization": "DiadocAuth ddauth_api_client_id=API-DIADIC-CLIENT-ID",
+        "Authorization": "DiadocAuth ddauth_api_client_id=API-client-id",
     }
 
 
@@ -80,10 +76,10 @@ def test_get_token_sent_right_request(http, mock_diadoc_auth_api, httpx_mock):
     http.get_token()
 
     request = httpx_mock.get_requests()[0]
-    assert request.headers["Authorization"] == "DiadocAuth ddauth_api_client_id=API-DIADIC-CLIENT-ID"
+    assert request.headers["Authorization"] == "DiadocAuth ddauth_api_client_id=API-client-id"
     assert request.headers["Content-Type"] == "application/json"
     assert request.headers["Accept"] == "application/json"
-    assert request.content == b'{"login": "email@example.com", "password": "PASS123"}'
+    assert request.content == b'{"login": "diadoc-login@example.com", "password": "diadoc-password"}'
 
 
 def test_headers_property_call_get_token(http, mock_get_token):
@@ -106,19 +102,19 @@ def test_headers_value(http, mock_get_token):
     assert headers == {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": "DiadocAuth ddauth_api_client_id=API-DIADIC-CLIENT-ID,ddauth_token=TOKEN",
+        "Authorization": "DiadocAuth ddauth_api_client_id=API-client-id,ddauth_token=TOKEN",
     }
 
 
 @pytest.mark.parametrize(
-    ("method", "status_code", "http_api_call"),
+    ("method", "http_api_call"),
     [
-        ("POST", 201, lambda http, params: http.post("url", params=params)),
-        ("GET", 200, lambda http, params: http.get("url", params=params)),
+        ("POST", lambda http, params: http.post("url", params=params)),
+        ("GET", lambda http, params: http.get("url", params=params)),
     ],
 )
-def test_return_received_json(http, mock_diadoc_url, mock_get_token, method, status_code, http_api_call):
-    mock_diadoc_url(url="https://diadoc-api.kontur.ru/url?param=value", method=method, status_code=status_code)
+def test_return_received_json(http, mock_diadoc_url, mock_get_token, method, http_api_call):
+    mock_diadoc_url(url="https://diadoc-api.kontur.ru/url?param=value", method=method)
 
     got = http_api_call(http, params={"param": "value"})
 
@@ -126,21 +122,21 @@ def test_return_received_json(http, mock_diadoc_url, mock_get_token, method, sta
 
 
 @pytest.mark.parametrize(
-    ("method", "expected_status", "http_api_call"),
+    ("method", "http_api_call"),
     [
-        ("POST", 201, lambda http, payload: http.post("url", payload=payload)),
-        ("GET", 200, lambda http, payload: http.get("url", payload=payload)),
+        ("POST", lambda http, payload: http.post("url", payload=payload)),
+        ("GET", lambda http, payload: http.get("url", payload=payload)),
     ],
 )
-def test_sent_request(http, mock_diadoc_url, mock_get_token, method, expected_status, http_api_call, httpx_mock):
-    mock_diadoc_url(method=method, status_code=expected_status)
+def test_sent_request(http, mock_diadoc_url, mock_get_token, method, http_api_call, httpx_mock):
+    mock_diadoc_url(method=method)
 
     http_api_call(http, payload={"field_name": "some_value"})
 
     sent_request = httpx_mock.get_requests()[0]
     assert sent_request.headers["Content-Type"] == "application/json"
     assert sent_request.headers["Accept"] == "application/json"
-    assert sent_request.headers["Authorization"] == "DiadocAuth ddauth_api_client_id=API-DIADIC-CLIENT-ID,ddauth_token=TOKEN"
+    assert sent_request.headers["Authorization"] == "DiadocAuth ddauth_api_client_id=API-client-id,ddauth_token=TOKEN"
     assert sent_request.content == b'{"field_name": "some_value"}'
 
 
@@ -159,14 +155,14 @@ def test_raise_on_unexpected_status_code(http, method, http_api_call, mock_diado
 
 
 @pytest.mark.parametrize(
-    ("method", "status_code", "http_api_call"),
+    ("method", "http_api_call"),
     [
-        ("POST", 201, lambda http: http.post("url")),
-        ("GET", 200, lambda http: http.get("url")),
+        ("POST", lambda http: http.post("url")),
+        ("GET", lambda http: http.get("url")),
     ],
 )
-def test_raise_on_not_json_response(http, method, http_api_call, mock_diadoc_url, mock_get_token, status_code):
-    mock_diadoc_url(method=method, status_code=status_code, text="not a json")
+def test_raise_on_not_json_response(http, method, http_api_call, mock_diadoc_url, mock_get_token):
+    mock_diadoc_url(method=method, text="not a json")
 
     with pytest.raises(DiadocHTTPException, match="JSON decode error"):
         http_api_call(http)
