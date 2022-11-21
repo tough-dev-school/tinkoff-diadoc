@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from uuid import UUID
 
 
 @dataclass
@@ -11,6 +12,7 @@ class LegalEntity:
     name: str
     inn: str
     kpp: str | None
+    diadoc_id: UUID | None = None
 
     def __str__(self) -> str:
         if self.kpp is None:

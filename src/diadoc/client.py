@@ -1,15 +1,16 @@
 from typing import Any
 
+from app.models import LegalEntity
 from diadoc.http import DiadocHTTP
+from diadoc.services import DiadocOrganizationGetter
 
 
 class DiadocClient:
     def __init__(self) -> None:
         self.http = DiadocHTTP()
 
-    def get_my_organization_ids(self) -> list[str]:
-        organizations = self.http.get("GetMyOrganizations")["Organizations"]  # type: ignore
-        return [organization["OrgId"] for organization in organizations]  # type: ignore
+    def get_my_organizations(self) -> list[LegalEntity]:
+        return DiadocOrganizationGetter(self.http.get("GetMyOrganizations"))()  # type: ignore
 
     def get_counteragents(self, my_organization_id: str, counteragent_status: str | None = None) -> list[dict[str, Any]]:
         params = {"myOrgId": my_organization_id}
