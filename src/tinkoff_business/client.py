@@ -3,7 +3,6 @@ from datetime import date
 from datetime import timedelta
 from typing import Any
 
-from tinkoff_business.exceptions import TinkoffBusinessClientException
 from tinkoff_business.http import TinkoffBusinessHTTP
 
 
@@ -23,8 +22,6 @@ class TinkoffBusinessClient:
         till_date = till_date or date.today()
         from_date = from_date or (till_date - timedelta(days=1))
 
-        self.validate_dates(from_date, till_date)
-
         return self.http.get(  # type: ignore
             "bank-statement",
             params={
@@ -33,9 +30,3 @@ class TinkoffBusinessClient:
                 "till": till_date.strftime("%Y-%m-%d"),
             },
         )["operation"]
-
-    def validate_dates(self, from_date: date, till_date: date) -> None:
-        if from_date > till_date:
-            raise TinkoffBusinessClientException("`from_date` could not be bigger than `till_date`")
-        if till_date > date.today():
-            raise TinkoffBusinessClientException("`till_date` could not be bigger than today")

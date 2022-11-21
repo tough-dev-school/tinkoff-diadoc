@@ -4,7 +4,6 @@ version = "0.1.0-dev"
 dependencies = [
     "httpx",
     "python-dotenv",
-    "pydantic",
     "schedule",
 ]
 
@@ -89,4 +88,7 @@ python_files=["test*.py"]
 testpaths=["tests"]
 filterwarnings=[
     "ignore:distutils Version classes are deprecated. Use packaging.version instead.:DeprecationWarning:pytest_freezegun:17",
+]
+env=[
+    "TINKOFF_BUSINESS_TOKEN = se7ret",
 ]

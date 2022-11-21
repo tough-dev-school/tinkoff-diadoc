@@ -1,36 +1,25 @@
 from functools import cached_property
 import json
-from typing import Any
+import os
+from typing import Any, ClassVar
 from urllib.parse import urljoin
 
+from dotenv import load_dotenv
 import httpx
 
-from app.settings import get_settings
 from app.types import SimpleJSONType
 from tinkoff_business.exceptions import TinkoffBusinessHTTPException
 
+load_dotenv()
+
 
 class TinkoffBusinessHTTP:
-    @property
-    def demo_mode(self) -> bool:
-        return get_settings().TINKOFF_BUSINESS_DEMO_MODE
-
-    @cached_property
-    def base_url(self) -> str:
-        if self.demo_mode:
-            return "https://business.tinkoff.ru/openapi/sandbox/api/v1/"
-        return "https://business.tinkoff.ru/openapi/api/v1/"
-
-    @cached_property
-    def token(self) -> str | None:
-        if self.demo_mode:
-            return "TinkoffOpenApiSandboxSecretToken"
-        return get_settings().TINKOFF_BUSINESS_TOKEN
+    base_url: ClassVar[str] = "https://business.tinkoff.ru/openapi/api/v1/"
 
     @cached_property
     def headers(self) -> dict[str, str]:
         return {
-            "Authorization": f"Bearer {self.token}",
+            "Authorization": f'Bearer {os.getenv("TINKOFF_BUSINESS_TOKEN")}',
         }
 
     def request(

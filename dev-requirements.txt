@@ -176,8 +176,6 @@ pycodestyle==2.9.1
     #   flake8
     #   flake8-print
     #   flake8-todo
-pydantic==1.10.2
-    # via tinkoff-diadoc (pyproject.toml)
 pyflakes==2.5.0
     # via flake8
 pygments==2.13.0
@@ -241,7 +239,6 @@ typing-extensions==4.4.0
     #   dotenv-linter
     #   flake8-pie
     #   mypy
-    #   pydantic
 wcwidth==0.2.5
     # via prompt-toolkit
 

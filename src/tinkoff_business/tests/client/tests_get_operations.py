@@ -4,7 +4,6 @@ import pytest
 import re
 
 from tinkoff_business.client import TinkoffBusinessClient
-from tinkoff_business.exceptions import TinkoffBusinessClientException
 
 
 @pytest.fixture
@@ -96,20 +95,6 @@ def test_by_default_requests_bank_statement_from_yesterday_till_today(client, mo
             "till": "2022-11-09",
         },
     )
-
-
-@pytest.mark.parametrize(
-    ("from_date", "till_date"),
-    [
-        (date(2022, 10, 10), date(2022, 1, 1)),  # `from_date` bigger `till_date`
-        (date(2010, 10, 10), date(2032, 10, 10)),  # `till_date` in future
-    ],
-)
-@pytest.mark.freeze_time("2030-10-10")
-def test_raise_invalid_dates(client, from_date, till_date):
-
-    with pytest.raises(TinkoffBusinessClientException, match="date"):
-        client.get_operations("100400", from_date, till_date)
 
 
 def test_return_operations_only(client, mock_tinkoff_response, bank_statement_json):
