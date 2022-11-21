@@ -5,6 +5,8 @@ from datetime import timedelta
 from app.models import BankAccount
 from app.models import LegalEntity
 from tinkoff_business.http import TinkoffBusinessHTTP
+from tinkoff_business.services import TinkoffBankAccountGetter
+from tinkoff_business.services import TinkoffPayerGetter
 
 
 @dataclass
@@ -12,7 +14,7 @@ class TinkoffBusinessClient:
     http: TinkoffBusinessHTTP = TinkoffBusinessHTTP()
 
     def get_bank_accounts(self) -> list[BankAccount]:
-        return BankAccount.from_tinkoff_bank_accounts(self.http.get("bank-accounts"))
+        return TinkoffBankAccountGetter(self.http.get("bank-accounts"))()
 
     def get_payers(self, account_number: str, from_date: date | None = None, till_date: date | None = None) -> list[LegalEntity]:
         """Get payers from 'bank-statement' API.
@@ -23,7 +25,7 @@ class TinkoffBusinessClient:
         till_date = till_date or date.today()
         from_date = from_date or (till_date - timedelta(days=1))
 
-        bank_statement = self.http.get(
+        bank_statement_response = self.http.get(
             "bank-statement",
             params={
                 "accountNumber": account_number,
@@ -32,4 +34,4 @@ class TinkoffBusinessClient:
             },
         )
 
-        return LegalEntity.from_tinkoff_bank_statement(bank_statement)
+        return TinkoffPayerGetter(bank_statement_response)()

@@ -1,11 +1,11 @@
 from datetime import date
 from functools import partial
-import json
 import pytest
 import re
 
 from app.models import LegalEntity
 from tinkoff_business.client import TinkoffBusinessClient
+from tinkoff_business.services import TinkoffPayerGetter
 
 
 @pytest.fixture
@@ -14,32 +14,22 @@ def client():
 
 
 @pytest.fixture
-def bank_statement_json():
-    with open("./tinkoff_business/tests/.fixtures/bank-statement.json") as fp:
-        bank_statement_response = json.load(fp)
-
-        bank_statement_response["operation"][0]["payerName"] = "Петрова Александра Ивановна"
-        bank_statement_response["operation"][0]["payerInn"] = "100500"
-        bank_statement_response["operation"][0].pop("payerKpp", None)
-
-        bank_statement_response["operation"][1]["payerName"] = 'ООО "ПЕРЧИК"'
-        bank_statement_response["operation"][1]["payerInn"] = "900600"
-        bank_statement_response["operation"][1]["payerKpp"] = "200500"
-
-        return bank_statement_response
-
-
-@pytest.fixture
-def mock_tinkoff_response(httpx_mock):
+def mock_tinkoff_response(httpx_mock, bank_statement_json):
     return partial(
         httpx_mock.add_response,
         url=re.compile(r"https://business.tinkoff.ru/openapi/api/v1/bank-statement.*"),
+        json=bank_statement_json,
     )
 
 
 @pytest.fixture
 def mock_http_get(mocker):
     return mocker.patch("tinkoff_business.http.TinkoffBusinessHTTP.get")
+
+
+@pytest.fixture
+def spy_tinkoff_payer_getter(mocker):
+    return mocker.spy(TinkoffPayerGetter, "__call__")
 
 
 def test_http_get_method_called_with_params(client, mock_http_get):
@@ -69,8 +59,16 @@ def test_by_default_requests_bank_statement_from_yesterday_till_today(client, mo
     )
 
 
-def test_payers(client, mock_tinkoff_response, bank_statement_json):
-    mock_tinkoff_response(json=bank_statement_json)
+def test_call_tinkoff_payer_getter(client, mock_tinkoff_response, spy_tinkoff_payer_getter):
+    mock_tinkoff_response()
+
+    client.get_payers("100500")
+
+    spy_tinkoff_payer_getter.assert_called_once()
+
+
+def test_get_payers_return(client, mock_tinkoff_response):
+    mock_tinkoff_response()
 
     got = client.get_payers("100500")
 

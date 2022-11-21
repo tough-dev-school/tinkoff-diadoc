@@ -1,9 +1,9 @@
 from functools import partial
-import json
 import pytest
 
 from app.models import BankAccount
 from tinkoff_business.client import TinkoffBusinessClient
+from tinkoff_business.services import TinkoffBankAccountGetter
 
 
 @pytest.fixture
@@ -12,24 +12,22 @@ def client():
 
 
 @pytest.fixture
-def bank_accounts_json():
-    with open("./tinkoff_business/tests/.fixtures/bank-accounts.json", "r") as fp:
-        response_json = json.load(fp)
-
-        response_json[0]["AccountNumber"] = "40802678901234567890"
-        response_json[0]["AccountNumber"] = "100500"
-
-        return response_json
-
-
-@pytest.fixture
-def mock_tinkoff_response(httpx_mock):
-    return partial(httpx_mock.add_response, url="https://business.tinkoff.ru/openapi/api/v1/bank-accounts")
+def mock_tinkoff_response(httpx_mock, bank_accounts_json):
+    return partial(
+        httpx_mock.add_response,
+        url="https://business.tinkoff.ru/openapi/api/v1/bank-accounts",
+        json=bank_accounts_json,
+    )
 
 
 @pytest.fixture
 def mock_http_get(mocker):
     return mocker.patch("tinkoff_business.http.TinkoffBusinessHTTP.get")
+
+
+@pytest.fixture
+def spy_tinkoff_bank_account_getter(mocker):
+    return mocker.spy(TinkoffBankAccountGetter, "__call__")
 
 
 def test_http_get_method_used(client, mock_http_get):
@@ -38,8 +36,16 @@ def test_http_get_method_used(client, mock_http_get):
     mock_http_get.assert_called_once_with("bank-accounts")
 
 
-def test_returns_bank_accounts(client, mock_tinkoff_response, bank_accounts_json):
-    mock_tinkoff_response(json=bank_accounts_json)
+def test_call_service_to_get_list_entity(client, mock_tinkoff_response, spy_tinkoff_bank_account_getter):
+    mock_tinkoff_response()
+
+    client.get_bank_accounts()
+
+    spy_tinkoff_bank_account_getter.assert_called_once()
+
+
+def test_returns_bank_accounts(client, mock_tinkoff_response):
+    mock_tinkoff_response()
 
     got = client.get_bank_accounts()
 
