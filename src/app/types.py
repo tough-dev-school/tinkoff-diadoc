@@ -1,3 +1,3 @@
 from typing import Any
 
-SimpleJSONType = list[dict[str, Any]] | dict[str, Any]
+SimpleJSON = list[dict[str, Any]] | dict[str, Any]

@@ -24,9 +24,6 @@ jobs:
           pip install --upgrade pip pip-tools
           pip-sync requirements.txt dev-requirements.txt
 
-      - name: Set environments
-        run: cp .env.example ./src/.env
-
       - name: Run the linter
         run: |
           . venv/bin/activate

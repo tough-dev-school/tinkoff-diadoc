@@ -7,7 +7,7 @@ from urllib.parse import urljoin
 from dotenv import load_dotenv
 import httpx
 
-from app.types import SimpleJSONType
+from app.types import SimpleJSON
 from tinkoff_business.exceptions import TinkoffBusinessHTTPException
 
 load_dotenv()
@@ -30,7 +30,7 @@ class TinkoffBusinessHTTP:
         payload: dict[str, Any] | None = None,
         params: dict[str, Any] | None = None,
         expected_status_code: int = 200,
-    ) -> SimpleJSONType:
+    ) -> SimpleJSON:
         response = httpx.request(
             method=method,
             url=self.format_url(url),
@@ -43,10 +43,10 @@ class TinkoffBusinessHTTP:
         self.raise_if_error_occurs(response, response_json, expected_status_code)
         return response_json
 
-    def get(self, url: str, params: dict[str, Any] | None = None, expected_status_code: int = 200) -> SimpleJSONType:
+    def get(self, url: str, params: dict[str, Any] | None = None, expected_status_code: int = 200) -> SimpleJSON:
         return self.request(url, method="GET", params=params, expected_status_code=expected_status_code)
 
-    def post(self, url: str, payload: dict[str, Any] | None = None, expected_status_code: int = 201) -> SimpleJSONType:
+    def post(self, url: str, payload: dict[str, Any] | None = None, expected_status_code: int = 201) -> SimpleJSON:
         return self.request(url, method="POST", payload=payload, expected_status_code=expected_status_code)
 
     def format_url(self, url: str) -> str:
