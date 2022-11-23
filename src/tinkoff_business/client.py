@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from datetime import date
 from datetime import timedelta
 
@@ -7,9 +6,9 @@ from app.models import LegalEntity
 from tinkoff_business.http import TinkoffBusinessHTTP
 
 
-@dataclass
 class TinkoffBusinessClient:
-    http: TinkoffBusinessHTTP = TinkoffBusinessHTTP()
+    def __init__(self) -> None:
+        self.http = TinkoffBusinessHTTP()
 
     def get_company(self) -> LegalEntity:
         company = self.http.get("company")

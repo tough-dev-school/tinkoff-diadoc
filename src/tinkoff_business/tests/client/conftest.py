@@ -5,21 +5,27 @@ from tinkoff_business.client import TinkoffBusinessClient
 
 
 @pytest.fixture
-def company_json():
-    with open("./tinkoff_business/tests/.fixtures/company.json", "r") as fp:
-        return json.load(fp)
+def get_fixture():
+    def _load(filename: str):
+        with open(f"./tinkoff_business/tests/.fixtures/{filename}", "r") as fp:
+            return json.load(fp)
+
+    return _load
 
 
 @pytest.fixture
-def bank_accounts_json():
-    with open("./tinkoff_business/tests/.fixtures/bank-accounts.json", "r") as fp:
-        return json.load(fp)
+def company_json(get_fixture):
+    return get_fixture("company.json")
 
 
 @pytest.fixture
-def bank_statement_json():
-    with open("./tinkoff_business/tests/.fixtures/bank-statement.json") as fp:
-        return json.load(fp)
+def bank_accounts_json(get_fixture):
+    return get_fixture("bank-accounts.json")
+
+
+@pytest.fixture
+def bank_statement_json(get_fixture):
+    return get_fixture("bank-statement.json")
 
 
 @pytest.fixture
