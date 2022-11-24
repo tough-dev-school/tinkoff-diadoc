@@ -4,7 +4,6 @@ version = "0.1.0-dev"
 dependencies = [
     "httpx",
     "python-dotenv",
-    "pydantic",
     "schedule",
 ]
 
