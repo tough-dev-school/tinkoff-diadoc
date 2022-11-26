@@ -1,4 +1,4 @@
-from typing import TypedDict
+from typing import Literal, TypedDict
 
 
 class DiadocOrganization(TypedDict):
@@ -8,3 +8,20 @@ class DiadocOrganization(TypedDict):
     OrgId: str
     IsActive: bool
     IsRoaming: bool
+
+
+DiadocCounteragentStatus = Literal[
+    "UnknownCounteragentStatus",
+    "IsMyCounteragent",
+    "InvitesMe",
+    "IsInvitedByMe",
+    "RejectsMe",
+    "IsRejectedByMe",
+    "NotInCounteragentList",
+]
+
+
+class DiadocCounteragent(TypedDict):
+    IndexKey: str
+    Organization: DiadocOrganization
+    CurrentStatus: DiadocCounteragentStatus
