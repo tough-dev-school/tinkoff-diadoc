@@ -11,3 +11,4 @@ class LegalEntity:
     name: str
     inn: str
     kpp: str | None
+    diadoc_id: str | None = None
