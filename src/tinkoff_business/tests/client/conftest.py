@@ -1,31 +1,27 @@
-import json
+from functools import partial
 import pytest
 
 from tinkoff_business.client import TinkoffBusinessClient
 
 
 @pytest.fixture
-def get_fixture():
-    def _load(filename: str):
-        with open(f"./tinkoff_business/tests/.fixtures/{filename}", "r") as fp:
-            return json.load(fp)
-
-    return _load
+def get_tinkoff_fixture(get_fixture):
+    return partial(get_fixture, directory_path="./tinkoff_business/tests/.fixtures/")
 
 
 @pytest.fixture
-def company_json(get_fixture):
-    return get_fixture("company.json")
+def company_json(get_tinkoff_fixture):
+    return get_tinkoff_fixture("company.json")
 
 
 @pytest.fixture
-def bank_accounts_json(get_fixture):
-    return get_fixture("bank-accounts.json")
+def bank_accounts_json(get_tinkoff_fixture):
+    return get_tinkoff_fixture("bank-accounts.json")
 
 
 @pytest.fixture
-def bank_statement_json(get_fixture):
-    return get_fixture("bank-statement.json")
+def bank_statement_json(get_tinkoff_fixture):
+    return get_tinkoff_fixture("bank-statement.json")
 
 
 @pytest.fixture
