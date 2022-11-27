@@ -130,7 +130,7 @@ def test_http_methods_send_right_requests(http_authorized, mock_diadoc_url, meth
 
     http_api_call(http_authorized, payload={"field_name": "some_value"})
 
-    sent_request = httpx_mock.get_requests()[0]
+    sent_request = httpx_mock.get_request()
     assert sent_request.headers["Content-Type"] == "application/json"
     assert sent_request.headers["Accept"] == "application/json"
     assert sent_request.headers["Authorization"] == "DiadocAuth ddauth_api_client_id=API-client-id,ddauth_token=TOKEN"
