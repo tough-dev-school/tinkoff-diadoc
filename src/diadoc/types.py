@@ -6,3 +6,5 @@ class DiadocOrganization(TypedDict):
     Inn: str
     Kpp: str
     OrgId: str
+    IsActive: bool
+    IsRoaming: bool
