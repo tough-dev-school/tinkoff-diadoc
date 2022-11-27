@@ -14,6 +14,7 @@ class DiadocClient:
 
     def get_counteragents(self, my_organization_id: str) -> list[DiadocLegalEntity]:
         """Return organization counteragents from possibly paginated API.
+
         To get next page:
             Step 1: Get `IndexKey` from last counteragent in response
             Step 2: Send request with query param `afterIndexKey` equals `IndexKey` from Step 1
