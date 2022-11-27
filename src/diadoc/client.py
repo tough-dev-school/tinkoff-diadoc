@@ -12,14 +12,14 @@ class DiadocClient:
         organizations: list[DiadocOrganization] = self.http.get("GetMyOrganizations")["Organizations"]  # type: ignore
         return DiadocLegalEntity.from_organization_list(organizations)
 
-    def get_counteragents(self, my_organization_id: str) -> list[DiadocLegalEntity]:
+    def get_counteragents(self, my_diadoc_id: str) -> list[DiadocLegalEntity]:
         """Return organization counteragents from possibly paginated API.
 
         To get next page:
             Step 1: Get `IndexKey` from last counteragent in response
             Step 2: Send request with query param `afterIndexKey` equals `IndexKey` from Step 1
         """
-        params = {"myOrgId": my_organization_id}
+        params = {"myOrgId": my_diadoc_id}
 
         counteragents: list[DiadocCounteragent] = []
         paginated_counteragents_empty = False
@@ -34,3 +34,11 @@ class DiadocClient:
                 paginated_counteragents_empty = True
 
         return DiadocLegalEntity.from_counteragents_list(counteragents)
+
+    def acquire_counteragent(self, diadoc_id: str, message: str | None = None) -> str:
+        payload = {"OrgId": diadoc_id}
+
+        if message:
+            payload["MessageToCounteragent"] = message
+
+        return self.http.post("V2/AcquireCounteragent", payload=payload)["TaskId"]  # type: ignore
