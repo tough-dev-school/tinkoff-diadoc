@@ -1,0 +1,57 @@
+{
+    "TotalCount": 1,
+    "Counteragents": [
+        {
+            "LastEventTimestamp": "2019-01-22T07:57:44.6009097Z",
+            "IndexKey": "08D8000B66C83D09602000EE6E4BB1418BAFB2DAD792C0D7",
+            "Organization": {
+                "OrgIdGuid": "2c9d3a6d-d8b2-46fc-8bce-af99fc68c575",
+                "OrgId": "2c9d3a6d-d8b2-46fc-8bce-af99fc68c575",
+                "Inn": "7818840039",
+                "Kpp": "781991111",
+                "FullName": "Общество с ограниченной ответственностью \"Булочка Опт\"",
+                "ShortName": "ООО \"Булочка ОПТ\"",
+                "JoinedDiadocTreaty": true,
+                "Boxes": [
+                    {
+                        "BoxId": "eb8ed6436537431fa9bc876b88f05591@diadoc.ru",
+                        "BoxIdGuid": "eb8ed643-6537-431f-a9bc-876b88f05591",
+                        "Title": "ООО \"БУЛОЧКА ОПТ\"",
+                        "InvoiceFormatVersion": "v5_02",
+                        "EncryptedDocumentsAllowed": false
+                    }
+                ],
+                "Ogrn": "1177788123191",
+                "FnsParticipantId": "2BM-7811996239-781991941-201710120997884488236",
+                "Address": {
+                    "RussianAddress": {
+                        "ZipCode": "292999",
+                        "Region": "78",
+                        "Street": "проспект Булковской Булки",
+                        "Building": "1",
+                        "Block": "стр. 1",
+                        "Apartment": "1003"
+                    },
+                    "AddressCode": ""
+                },
+                "FnsRegistrationDate": "01.11.2018",
+                "Departments": [],
+                "IfnsCode": "7816",
+                "IsPilot": false,
+                "IsActive": true,
+                "IsTest": false,
+                "IsBranch": false,
+                "IsRoaming": false,
+                "IsEmployee": false,
+                "InvitationCount": 0,
+                "SearchCount": 0,
+                "Sociability": "AllOrganizations",
+                "IsForeign": false,
+                "HasCertificateToSign": true
+            },
+            "CurrentStatus": "RejectsMe",
+            "LastEventTimestampTicks": 637468990646009097
+        }
+    ],
+    "TotalCountType": "Equal"
+}
