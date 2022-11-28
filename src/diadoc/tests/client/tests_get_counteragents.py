@@ -43,7 +43,7 @@ def mock_response(httpx_mock):
 
 @pytest.fixture
 def get_counteragents(client, my_organization):
-    return partial(client.get_counteragents, my_organization_id=my_organization.diadoc_id)
+    return partial(client.get_counteragents, my_diadoc_id=my_organization.diadoc_id)
 
 
 def test_get_counteragents_return_legal_entities(get_counteragents, mock_response, page_one, empty_page):
