@@ -34,3 +34,11 @@ class DiadocClient:
                 paginated_counteragents_empty = True
 
         return DiadocLegalEntity.from_counteragents_list(counteragents)
+
+    def get_organizations_by_inn_kpp(self, inn: str, kpp: str | None = None) -> list[DiadocLegalEntity]:
+        params = {"inn": inn}
+        if kpp:
+            params["kpp"] = kpp
+
+        organizations: list[DiadocOrganization] = self.http.get("GetOrganizationsByInnKpp", params=params)["Organizations"]  # type: ignore
+        return DiadocLegalEntity.from_organization_list(organizations)

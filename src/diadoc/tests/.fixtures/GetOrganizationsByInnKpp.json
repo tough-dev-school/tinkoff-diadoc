@@ -1,0 +1,104 @@
+{
+    "Organizations": [
+        {
+            "OrgIdGuid": "8e165910-7ee8-4dc8-9d96-af7df4e8e0cd",
+            "OrgId": "8e165910-7ee8-4dc8-9d96-af7df4e8e0cd",
+            "Inn": "7710140679",
+            "Kpp": "771301001",
+            "FullName": "Акционерное общество \"Тинькофф Банк\"",
+            "ShortName": "АО \"ТИНЬКОФФ БАНК\"",
+            "JoinedDiadocTreaty": true,
+            "Boxes": [
+                {
+                    "BoxId": "2700ef9e010846198d3e74463cedc6c2@diadoc.ru",
+                    "BoxIdGuid": "2700ef9e-0108-4619-8d3e-74463cedc6c2",
+                    "Title": "АО \"ТИНЬКОФФ БАНК\"",
+                    "InvoiceFormatVersion": "v5_02",
+                    "EncryptedDocumentsAllowed": false
+                }
+            ],
+            "Ogrn": "1027739642281",
+            "FnsParticipantId": "2AE373287E1-7100-4655-9F84-58CF0061FBD9",
+            "Address": {
+                "RussianAddress": {
+                    "ZipCode": "123060",
+                    "Region": "77",
+                    "Street": "проезд 1-Й Волоколамский",
+                    "Building": "10",
+                    "Block": "1"
+                },
+                "AddressCode": ""
+            },
+            "Departments": [],
+            "IfnsCode": "7734",
+            "IsPilot": false,
+            "IsActive": true,
+            "IsTest": false,
+            "IsBranch": false,
+            "IsRoaming": true,
+            "IsEmployee": false,
+            "InvitationCount": 0,
+            "SearchCount": 0,
+            "Sociability": "AllOrganizations",
+            "IsForeign": false,
+            "HasCertificateToSign": true
+        },
+        {
+            "OrgIdGuid": "a3e04137-55f3-4324-87d2-35c437a2d15a",
+            "OrgId": "a3e04137-55f3-4324-87d2-35c437a2d15a",
+            "Inn": "7710140679",
+            "Kpp": "771301001",
+            "FullName": "Акционерное общество \"Тинькофф Банк\"",
+            "ShortName": "АО \"ТИНЬКОФФ БАНК\"",
+            "JoinedDiadocTreaty": true,
+            "Boxes": [
+                {
+                    "BoxId": "4f7ce8b157614cb986ef87ac132e45cb@diadoc.ru",
+                    "BoxIdGuid": "4f7ce8b1-5761-4cb9-86ef-87ac132e45cb",
+                    "Title": "АО \"ТИНЬКОФФ БАНК\"",
+                    "InvoiceFormatVersion": "v5_02",
+                    "EncryptedDocumentsAllowed": false
+                }
+            ],
+            "Ogrn": "1027739642281",
+            "FnsParticipantId": "2BM-7710140679-2012052808235992662630000000000",
+            "Address": {
+                "RussianAddress": {
+                    "ZipCode": "127287",
+                    "Region": "77",
+                    "Street": "Хуторская 2-я",
+                    "Building": "д. 38А, стр. 26"
+                },
+                "AddressCode": ""
+            },
+            "FnsRegistrationDate": "28.06.2016",
+            "Departments": [
+                {
+                    "DepartmentId": "77d6a5d7-c1ba-47be-bb64-8d482fb9d8ef",
+                    "ParentDepartmentId": "00000000-0000-0000-0000-000000000000",
+                    "Name": "Управление партнёрских программ",
+                    "Abbreviation": "УПП",
+                    "Address": {
+                        "RussianAddress": {
+                            "Region": ""
+                        },
+                        "AddressCode": ""
+                    },
+                    "IsDisabled": false
+                }
+            ],
+            "IfnsCode": "7713",
+            "IsPilot": false,
+            "IsActive": true,
+            "IsTest": false,
+            "IsBranch": false,
+            "IsRoaming": false,
+            "IsEmployee": false,
+            "InvitationCount": 0,
+            "SearchCount": 0,
+            "Sociability": "AllOrganizations",
+            "IsForeign": false,
+            "HasCertificateToSign": true
+        }
+    ]
+}
