@@ -1,11 +1,14 @@
-from typing import Literal, TypedDict
+from typing import Literal, TypeAlias, TypedDict
+
+DiadocId: TypeAlias = str
+DiadocTaskId: TypeAlias = str
 
 
 class DiadocOrganization(TypedDict):
     ShortName: str
     Inn: str
     Kpp: str
-    OrgId: str
+    OrgId: DiadocId
     IsActive: bool
     IsRoaming: bool
 

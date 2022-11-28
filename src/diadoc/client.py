@@ -1,7 +1,9 @@
 from diadoc.http import DiadocHTTP
 from diadoc.models import DiadocLegalEntity
 from diadoc.types import DiadocCounteragent
+from diadoc.types import DiadocId
 from diadoc.types import DiadocOrganization
+from diadoc.types import DiadocTaskId
 
 
 class DiadocClient:
@@ -12,7 +14,7 @@ class DiadocClient:
         organizations: list[DiadocOrganization] = self.http.get("GetMyOrganizations")["Organizations"]  # type: ignore
         return DiadocLegalEntity.from_organization_list(organizations)
 
-    def get_counteragents(self, my_diadoc_id: str) -> list[DiadocLegalEntity]:
+    def get_counteragents(self, my_diadoc_id: DiadocId) -> list[DiadocLegalEntity]:
         """Return organization counteragents from possibly paginated API.
 
         To get next page:
@@ -43,7 +45,7 @@ class DiadocClient:
         organizations: list[DiadocOrganization] = self.http.get("GetOrganizationsByInnKpp", params=params)["Organizations"]  # type: ignore
         return DiadocLegalEntity.from_organization_list(organizations)
 
-    def acquire_counteragent(self, diadoc_id: str, message: str | None = None) -> str:
+    def acquire_counteragent(self, diadoc_id: DiadocId, message: str | None = None) -> DiadocTaskId:
         payload = {"OrgId": diadoc_id}
 
         if message:
