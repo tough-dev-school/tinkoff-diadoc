@@ -28,8 +28,15 @@ COUNTERAGENT_PARTNERSHIP_STATUS_MAP = {
 class DiadocLegalEntity(LegalEntity):
     diadoc_id: str
     is_active: bool
-    is_roaming: bool
     diadoc_partnership_status: PartnershipStatus | None = None
+
+    @property
+    def in_partners(self):
+        return self.diadoc_partnership_status == PartnershipStatus.ESTABLISHED
+
+    @property
+    def invite_not_needed(self):
+        return self.diadoc_partnership_status in [PartnershipStatus.INVITE_WAS_SENT, PartnershipStatus.REJECTED]
 
     @staticmethod
     def from_organization(organization=DiadocOrganization) -> "DiadocLegalEntity":
@@ -39,7 +46,6 @@ class DiadocLegalEntity(LegalEntity):
             kpp=organization["Kpp"] or None,
             diadoc_id=organization["OrgId"],
             is_active=organization["IsActive"],
-            is_roaming=organization["IsRoaming"],
         )
 
     @classmethod

@@ -14,7 +14,6 @@ def my_organization():
         kpp=None,
         diadoc_id="75fcac12-ec63-4cdd-9076-87a8a2e6e8ba",
         is_active=True,
-        is_roaming=False,
     )
 
 
@@ -60,7 +59,6 @@ def test_get_counteragents_return_legal_entities(get_counteragents, mock_respons
             diadoc_id="229c4201-3680-4317-8a19-68d4748c0cd5",
             diadoc_partnership_status=PartnershipStatus.INVITE_SHOULD_BE_SEND,
             is_active=True,
-            is_roaming=False,
         ),
         DiadocLegalEntity(
             name='ООО "Рога и рыльца"',
@@ -69,7 +67,6 @@ def test_get_counteragents_return_legal_entities(get_counteragents, mock_respons
             diadoc_id="aaddf4f0-6c13-4ddb-baf3-ad2265995365",
             diadoc_partnership_status=PartnershipStatus.ESTABLISHED,
             is_active=True,
-            is_roaming=True,
         ),
     ]
 

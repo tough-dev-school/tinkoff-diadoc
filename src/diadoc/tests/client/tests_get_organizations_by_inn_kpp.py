@@ -31,7 +31,6 @@ def test_get_inn_kpp_organizations_return_legal_entities(get_organizations, mock
             kpp="771301001",
             diadoc_id="8e165910-7ee8-4dc8-9d96-af7df4e8e0cd",
             is_active=True,
-            is_roaming=True,
         ),
         DiadocLegalEntity(
             name='АО "ТИНЬКОФФ БАНК"',
@@ -39,7 +38,6 @@ def test_get_inn_kpp_organizations_return_legal_entities(get_organizations, mock
             kpp="771301001",
             diadoc_id="a3e04137-55f3-4324-87d2-35c437a2d15a",
             is_active=True,
-            is_roaming=False,
         ),
     ]
 
