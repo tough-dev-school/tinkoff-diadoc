@@ -35,6 +35,14 @@ class DiadocClient:
 
         return DiadocLegalEntity.from_counteragents_list(counteragents)
 
+    def get_organizations_by_inn_kpp(self, inn: str, kpp: str | None = None) -> list[DiadocLegalEntity]:
+        params = {"inn": inn}
+        if kpp:
+            params["kpp"] = kpp
+
+        organizations: list[DiadocOrganization] = self.http.get("GetOrganizationsByInnKpp", params=params)["Organizations"]  # type: ignore
+        return DiadocLegalEntity.from_organization_list(organizations)
+
     def acquire_counteragent(self, diadoc_id: str, message: str | None = None) -> str:
         payload = {"OrgId": diadoc_id}
 
