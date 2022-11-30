@@ -42,4 +42,4 @@ def test_return_distinct_payers(mock_tinkoff_get_payers, get_distinct_payers, en
 
     distinct_payers = get_distinct_payers()
 
-    assert distinct_payers == [entity, ya_entity]
+    assert distinct_payers == {entity, ya_entity}

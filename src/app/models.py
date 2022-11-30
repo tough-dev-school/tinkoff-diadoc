@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from dataclasses import field
 
 
 @dataclass
@@ -6,9 +7,9 @@ class BankAccount:
     account_number: str
 
 
-@dataclass
+@dataclass(unsafe_hash=True)
 class LegalEntity:
-    name: str
+    name: str = field(hash=False, compare=False)
     inn: str
     kpp: str | None
 

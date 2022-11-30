@@ -33,22 +33,15 @@ class TinkoffToDiadoc:
     def get_counteragents(self, my_company: DiadocLegalEntity) -> list[DiadocLegalEntity]:
         return self.diadoc.get_counteragents(my_company.diadoc_id)
 
-    def get_recent_distinct_payers(self, bank_accounts: list[BankAccount], my_company: DiadocLegalEntity) -> list[LegalEntity]:
+    def get_recent_distinct_payers(self, bank_accounts: list[BankAccount], my_company: DiadocLegalEntity) -> set[LegalEntity]:
         payers: list[LegalEntity] = []
-        distinct_payers: list[LegalEntity] = []
-        payers_inn_kpp: set[str] = set()
 
         for bank_account in bank_accounts:
             payers += self.tinkoff.get_payers(account_number=bank_account.account_number, exclude_payer_inn=my_company.inn)
 
-        for payer in payers:
-            if payer.inn_kpp not in payers_inn_kpp:
-                distinct_payers.append(payer)
-                payers_inn_kpp.add(payer.inn_kpp)
+        return set(payers)
 
-        return distinct_payers
-
-    def exclude_payers_in_partners(self, payers: list[LegalEntity], counteragents: list[DiadocLegalEntity]) -> list[LegalEntity]:
+    def exclude_payers_in_partners(self, payers: set[LegalEntity], counteragents: list[DiadocLegalEntity]) -> list[LegalEntity]:
         partners_already_inn_kpp = {counteragent.inn_kpp for counteragent in counteragents if counteragent.in_partners}
 
         return [payer for payer in payers if payer.inn_kpp not in partners_already_inn_kpp]

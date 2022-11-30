@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from dataclasses import field
 from enum import Enum
 
 from app.models import LegalEntity
@@ -24,11 +25,11 @@ COUNTERAGENT_PARTNERSHIP_STATUS_MAP = {
 }
 
 
-@dataclass
+@dataclass(unsafe_hash=True)
 class DiadocLegalEntity(LegalEntity):
     diadoc_id: str
-    is_active: bool
-    diadoc_partnership_status: PartnershipStatus | None = None
+    is_active: bool = field(hash=False, compare=False)
+    diadoc_partnership_status: PartnershipStatus | None = field(default=None, hash=False, compare=False)
 
     @property
     def in_partners(self):
