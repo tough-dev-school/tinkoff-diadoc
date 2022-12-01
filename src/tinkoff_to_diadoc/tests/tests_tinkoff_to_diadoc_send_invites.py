@@ -13,16 +13,16 @@ def mock_acquire_counteragent(mocker):
 
 @pytest.fixture
 def send_invites(tinkoff_to_diadoc):
-    return lambda diadoc_entities: tinkoff_to_diadoc.send_invites(diadoc_entities)
+    return lambda *partners: tinkoff_to_diadoc.send_invites(partners)
 
 
-def test_call_acquire_counteragent_for_every_counteragent(send_invites, diadoc_entity, ya_diadoc_entity, mock_acquire_counteragent, mocker):
-    send_invites([diadoc_entity, ya_diadoc_entity])
+def test_call_acquire_counteragent_for_every_partner(send_invites, partner, ya_partner, mock_acquire_counteragent, mocker):
+    send_invites(partner, ya_partner)
 
     mock_acquire_counteragent.assert_has_calls(
         calls=[
-            mocker.call(diadoc_id=diadoc_entity.diadoc_id, message="Давай запартнеримся в Диадок!"),
-            mocker.call(diadoc_id=ya_diadoc_entity.diadoc_id, message="Давай запартнеримся в Диадок!"),
+            mocker.call(diadoc_id=partner.diadoc_id, message="Давай запартнеримся в Диадок!"),
+            mocker.call(diadoc_id=ya_partner.diadoc_id, message="Давай запартнеримся в Диадок!"),
         ],
         any_order=True,
     )

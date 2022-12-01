@@ -1,5 +1,5 @@
 from diadoc.http import DiadocHTTP
-from diadoc.models import DiadocLegalEntity
+from diadoc.models import DiadocPartner
 from diadoc.types import DiadocCounteragent
 from diadoc.types import DiadocId
 from diadoc.types import DiadocOrganization
@@ -10,11 +10,11 @@ class DiadocClient:
     def __init__(self) -> None:
         self.http = DiadocHTTP()
 
-    def get_my_organizations(self) -> list[DiadocLegalEntity]:
+    def get_my_organizations(self) -> list[DiadocPartner]:
         organizations: list[DiadocOrganization] = self.http.get("GetMyOrganizations")["Organizations"]  # type: ignore
-        return DiadocLegalEntity.from_organization_list(organizations)
+        return DiadocPartner.from_organization_list(organizations)
 
-    def get_counteragents(self, my_diadoc_id: DiadocId) -> list[DiadocLegalEntity]:
+    def get_counteragents(self, my_diadoc_id: DiadocId) -> list[DiadocPartner]:
         """Return organization counteragents from possibly paginated API.
 
         To get next page:
@@ -35,15 +35,15 @@ class DiadocClient:
             else:
                 paginated_counteragents_empty = True
 
-        return DiadocLegalEntity.from_counteragents_list(counteragents)
+        return DiadocPartner.from_counteragent_list(counteragents)
 
-    def get_organizations_by_inn_kpp(self, inn: str, kpp: str | None = None) -> list[DiadocLegalEntity]:
+    def get_organizations_by_inn_kpp(self, inn: str, kpp: str | None = None) -> list[DiadocPartner]:
         params = {"inn": inn}
         if kpp:
             params["kpp"] = kpp
 
         organizations: list[DiadocOrganization] = self.http.get("GetOrganizationsByInnKpp", params=params)["Organizations"]  # type: ignore
-        return DiadocLegalEntity.from_organization_list(organizations)
+        return DiadocPartner.from_organization_list(organizations)
 
     def acquire_counteragent(self, diadoc_id: DiadocId, message: str | None = None) -> DiadocTaskId:
         payload = {"OrgId": diadoc_id}

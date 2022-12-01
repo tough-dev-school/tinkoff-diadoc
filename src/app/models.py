@@ -7,7 +7,7 @@ class BankAccount:
     account_number: str
 
 
-@dataclass(unsafe_hash=True)
+@dataclass(frozen=True)
 class LegalEntity:
     name: str = field(hash=False, compare=False)
     inn: str

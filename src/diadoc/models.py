@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from dataclasses import field
 from enum import Enum
 
 from app.models import LegalEntity
@@ -25,11 +24,12 @@ COUNTERAGENT_PARTNERSHIP_STATUS_MAP = {
 }
 
 
-@dataclass(unsafe_hash=True)
-class DiadocLegalEntity(LegalEntity):
+@dataclass(frozen=True)
+class DiadocPartner(LegalEntity):
     diadoc_id: str
-    is_active: bool = field(hash=False, compare=False)
-    diadoc_partnership_status: PartnershipStatus | None = field(default=None, hash=False, compare=False)
+    is_active: bool
+    is_roaming: bool
+    diadoc_partnership_status: PartnershipStatus | None = None
 
     @property
     def in_partners(self):
@@ -40,25 +40,26 @@ class DiadocLegalEntity(LegalEntity):
         return self.diadoc_partnership_status in [PartnershipStatus.INVITE_WAS_SENT, PartnershipStatus.REJECTED]
 
     @staticmethod
-    def from_organization(organization=DiadocOrganization) -> "DiadocLegalEntity":
-        return DiadocLegalEntity(
+    def from_organization(organization: DiadocOrganization, partnership_status: PartnershipStatus | None = None) -> "DiadocPartner":
+        return DiadocPartner(
             name=organization["ShortName"],
             inn=organization["Inn"],
             kpp=organization["Kpp"] or None,
             diadoc_id=organization["OrgId"],
             is_active=organization["IsActive"],
+            is_roaming=organization["IsRoaming"],
+            diadoc_partnership_status=partnership_status,
         )
 
     @classmethod
-    def from_organization_list(cls, organizations: list[DiadocOrganization]) -> list["DiadocLegalEntity"]:
+    def from_organization_list(cls, organizations: list[DiadocOrganization]) -> list["DiadocPartner"]:
         return [cls.from_organization(organization) for organization in organizations]
 
     @classmethod
-    def from_counteragent(cls, counteragent=DiadocCounteragent) -> "DiadocLegalEntity":
-        legal_entity = cls.from_organization(counteragent["Organization"])
-        legal_entity.diadoc_partnership_status = COUNTERAGENT_PARTNERSHIP_STATUS_MAP[counteragent["CurrentStatus"]]
-        return legal_entity
+    def from_counteragent(cls, counteragent: DiadocCounteragent) -> "DiadocPartner":
+        partnership_status = COUNTERAGENT_PARTNERSHIP_STATUS_MAP[counteragent["CurrentStatus"]]
+        return cls.from_organization(counteragent["Organization"], partnership_status=partnership_status)
 
     @classmethod
-    def from_counteragents_list(cls, counteragents: list[DiadocCounteragent]) -> list["DiadocLegalEntity"]:
+    def from_counteragent_list(cls, counteragents: list[DiadocCounteragent]) -> list["DiadocPartner"]:
         return [cls.from_counteragent(counteragent) for counteragent in counteragents]

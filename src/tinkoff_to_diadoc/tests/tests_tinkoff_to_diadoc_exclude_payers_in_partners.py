@@ -1,28 +1,14 @@
 from functools import partial
 import pytest
-from uuid import uuid4
 
-from diadoc.models import DiadocLegalEntity
 from diadoc.models import PartnershipStatus
 
 
 @pytest.fixture
-def create_counteragent(entity):
-    return lambda partnership_status: DiadocLegalEntity(
-        name=entity.name,
-        inn=entity.inn,
-        kpp=entity.kpp,
-        diadoc_id=str(uuid4()),
-        diadoc_partnership_status=partnership_status,
-        is_active=True,
-    )
-
-
-@pytest.fixture
-def exclude_payers(tinkoff_to_diadoc, entity):
+def exclude_payers(tinkoff_to_diadoc, legal_entity):
     return partial(
         tinkoff_to_diadoc.exclude_payers_in_partners,
-        payers=[entity],
+        payers=[legal_entity],
     )
 
 
@@ -34,26 +20,26 @@ def exclude_payers(tinkoff_to_diadoc, entity):
         PartnershipStatus.REJECTED,
     ],
 )
-def test_include_payer_not_in_established_counteragents(exclude_payers, entity, create_counteragent, partnership_status):
-    counteragent = create_counteragent(partnership_status)
+def test_include_payer_not_in_established_counteragents(exclude_payers, legal_entity, partner, create_counteragent, partnership_status):
+    counteragent = create_counteragent(partner, partnership_status)
 
     payers = exclude_payers(counteragents=[counteragent])
 
-    assert payers == [entity]
+    assert payers == [legal_entity]
 
 
-def test_exclude_payer_in_established_counteragents(exclude_payers, create_counteragent):
-    counteragent = create_counteragent(PartnershipStatus.ESTABLISHED)
+def test_exclude_payer_in_established_counteragents(exclude_payers, partner, create_counteragent):
+    counteragent = create_counteragent(partner, PartnershipStatus.ESTABLISHED)
 
     payers = exclude_payers(counteragents=[counteragent])
 
     assert payers == []
 
 
-def test_exclude_payer_if_several_counteragents_found_one_of_them_established(exclude_payers, create_counteragent):
-    counteragent = create_counteragent(PartnershipStatus.ESTABLISHED)
-    same_entity_counteragent = create_counteragent(PartnershipStatus.INVITE_SHOULD_BE_SEND)
+def test_exclude_payer_if_several_counteragents_found_one_of_them_established(exclude_payers, partner, create_counteragent):
+    counteragent = create_counteragent(partner, PartnershipStatus.ESTABLISHED)
+    same_partner_counteragent = create_counteragent(partner, PartnershipStatus.INVITE_SHOULD_BE_SEND)
 
-    payers = exclude_payers(counteragents=[counteragent, same_entity_counteragent])
+    payers = exclude_payers(counteragents=[counteragent, same_partner_counteragent])
 
     assert payers == []
