@@ -1,7 +1,7 @@
 from functools import partial
 import pytest
 
-from diadoc.models import DiadocLegalEntity
+from diadoc.models import DiadocPartner
 
 
 @pytest.fixture
@@ -18,13 +18,13 @@ def mock_diadoc_response(httpx_mock, get_my_organizations_json):
     )
 
 
-def test_get_my_organizations_return_legal_entities(client, mock_diadoc_response):
+def test_get_my_organizations_return_diadoc_partners(client, mock_diadoc_response):
     mock_diadoc_response()
 
-    legal_entities = client.get_my_organizations()
+    diadoc_partners = client.get_my_organizations()
 
-    assert legal_entities == [
-        DiadocLegalEntity(
+    assert diadoc_partners == [
+        DiadocPartner(
             name="Королевич В. Е.",
             inn="123456789012",
             kpp=None,
@@ -32,7 +32,7 @@ def test_get_my_organizations_return_legal_entities(client, mock_diadoc_response
             is_active=True,
             is_roaming=False,
         ),
-        DiadocLegalEntity(
+        DiadocPartner(
             name='ООО "Рога и рыльца"',
             inn="7744001499",
             kpp="997950001",

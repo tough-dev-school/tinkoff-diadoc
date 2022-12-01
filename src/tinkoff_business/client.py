@@ -1,11 +1,14 @@
 from datetime import date
 from datetime import timedelta
+from typing import TYPE_CHECKING
 
 from app.models import BankAccount
 from app.models import LegalEntity
 from tinkoff_business.http import TinkoffBusinessHTTP
-from tinkoff_business.types import TinkoffBankStatement
-from tinkoff_business.types import TinkoffCompany
+
+if TYPE_CHECKING:
+    from tinkoff_business.types import TinkoffBankStatement
+    from tinkoff_business.types import TinkoffCompany
 
 
 class TinkoffBusinessClient:

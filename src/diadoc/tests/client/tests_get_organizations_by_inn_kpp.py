@@ -2,7 +2,7 @@ from functools import partial
 import pytest
 import re
 
-from diadoc.models import DiadocLegalEntity
+from diadoc.models import DiadocPartner
 
 
 @pytest.fixture
@@ -19,13 +19,13 @@ def get_organizations(client):
     return partial(client.get_organizations_by_inn_kpp, inn="7710140679", kpp="771301001")
 
 
-def test_get_inn_kpp_organizations_return_legal_entities(get_organizations, mock_diadoc_response):
+def test_get_inn_kpp_organizations_return_diadoc_partners(get_organizations, mock_diadoc_response):
     mock_diadoc_response()
 
     got = get_organizations()
 
     assert got == [
-        DiadocLegalEntity(
+        DiadocPartner(
             name='АО "ТИНЬКОФФ БАНК"',
             inn="7710140679",
             kpp="771301001",
@@ -33,7 +33,7 @@ def test_get_inn_kpp_organizations_return_legal_entities(get_organizations, mock
             is_active=True,
             is_roaming=True,
         ),
-        DiadocLegalEntity(
+        DiadocPartner(
             name='АО "ТИНЬКОФФ БАНК"',
             inn="7710140679",
             kpp="771301001",

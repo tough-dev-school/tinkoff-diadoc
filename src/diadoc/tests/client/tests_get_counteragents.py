@@ -2,13 +2,13 @@ from functools import partial
 import pytest
 import re
 
-from diadoc.models import DiadocLegalEntity
+from diadoc.models import DiadocPartner
 from diadoc.models import PartnershipStatus
 
 
 @pytest.fixture
 def my_organization():
-    return DiadocLegalEntity(
+    return DiadocPartner(
         name="Пивзавод",
         inn="771245768212",
         kpp=None,
@@ -46,25 +46,25 @@ def get_counteragents(client, my_organization):
     return partial(client.get_counteragents, my_diadoc_id=my_organization.diadoc_id)
 
 
-def test_get_counteragents_return_legal_entities(get_counteragents, mock_response, page_one, empty_page):
+def test_get_counteragents_return_diadoc_partners(get_counteragents, mock_response, page_one, empty_page):
     mock_response(json=page_one)
     mock_response(json=empty_page)
 
     got = get_counteragents()
 
     assert got == [
-        DiadocLegalEntity(
+        DiadocPartner(
             name="Королевич В. Е.",
-            inn="123456789012",  # same as dict key
+            inn="123456789012",
             kpp=None,
             diadoc_id="229c4201-3680-4317-8a19-68d4748c0cd5",
             diadoc_partnership_status=PartnershipStatus.INVITE_SHOULD_BE_SEND,
             is_active=True,
             is_roaming=False,
         ),
-        DiadocLegalEntity(
+        DiadocPartner(
             name='ООО "Рога и рыльца"',
-            inn="7744001499",  # same as dict key
+            inn="7744001499",
             kpp="997950001",
             diadoc_id="aaddf4f0-6c13-4ddb-baf3-ad2265995365",
             diadoc_partnership_status=PartnershipStatus.ESTABLISHED,
@@ -101,9 +101,9 @@ def test_partnership_status_sets_correctly(get_counteragents, mock_response, pag
     mock_response(json=page_two)
     mock_response(json=empty_page)
 
-    legal_entity = get_counteragents()[0]
+    diadoc_partner = get_counteragents()[0]
 
-    assert legal_entity.diadoc_partnership_status == expected
+    assert diadoc_partner.diadoc_partnership_status == expected
 
 
 def test_my_org_id_param_in_every_request(get_counteragents, mock_response, empty_page, httpx_mock):
