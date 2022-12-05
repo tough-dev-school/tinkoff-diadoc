@@ -5,6 +5,7 @@ dependencies = [
     "httpx",
     "python-dotenv",
     "schedule",
+    "sentry-sdk",
 ]
 
 
@@ -13,14 +14,12 @@ dev = [
     "ipython",
 
     "pytest-deadfixtures",
-    "pytest-env",
     "pytest-mock",
     "pytest-httpx",
     "pytest-randomly",
     "pytest-freezegun",
 
     "black",
-    "mixer",
 
     "dotenv-linter",
 

@@ -1,12 +1,16 @@
 from functools import cached_property
 import os
 
+from dotenv import load_dotenv
+
 from app.models import BankAccount
 from app.models import LegalEntity
 from diadoc.client import DiadocClient
 from diadoc.models import DiadocPartner
 from tinkoff_business.client import TinkoffBusinessClient
 from tinkoff_to_diadoc.exceptions import TinkoffToDiadocException
+
+load_dotenv()
 
 
 class TinkoffToDiadoc:
