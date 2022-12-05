@@ -10,7 +10,7 @@ appnope==0.1.3
     # via ipython
 astor==0.8.1
     # via flake8-simplify
-asttokens==2.1.0
+asttokens==2.2.0
     # via
     #   flake8-aaa
     #   stack-data
@@ -31,6 +31,7 @@ certifi==2022.9.24
     # via
     #   httpcore
     #   httpx
+    #   sentry-sdk
 click==8.1.3
     # via
     #   black
@@ -50,8 +51,6 @@ exceptiongroup==1.0.4
     # via pytest
 executing==1.2.0
     # via stack-data
-faker==12.0.1
-    # via mixer
 flake8==5.0.4
     # via
     #   flake8-absolute-import
@@ -73,7 +72,7 @@ flake8-aaa==0.12.2
     # via tinkoff-diadoc (pyproject.toml)
 flake8-absolute-import==1.0.0.1
     # via tinkoff-diadoc (pyproject.toml)
-flake8-black==0.3.3
+flake8-black==0.3.5
     # via tinkoff-diadoc (pyproject.toml)
 flake8-bugbear==22.10.27
     # via tinkoff-diadoc (pyproject.toml)
@@ -83,7 +82,7 @@ flake8-eradicate==1.4.0
     # via tinkoff-diadoc (pyproject.toml)
 flake8-fixme==1.1.1
     # via tinkoff-diadoc (pyproject.toml)
-flake8-isort==5.0.0
+flake8-isort==5.0.3
     # via tinkoff-diadoc (pyproject.toml)
 flake8-multiline-containers==0.0.19
     # via tinkoff-diadoc (pyproject.toml)
@@ -97,7 +96,7 @@ flake8-print==5.0.0
     # via tinkoff-diadoc (pyproject.toml)
 flake8-printf-formatting==1.1.2
     # via tinkoff-diadoc (pyproject.toml)
-flake8-pyproject==1.1.0.post0
+flake8-pyproject==1.2.2
     # via tinkoff-diadoc (pyproject.toml)
 flake8-pytest==1.4
     # via tinkoff-diadoc (pyproject.toml)
@@ -117,11 +116,11 @@ flake8-walrus==1.2.0
     # via tinkoff-diadoc (pyproject.toml)
 freezegun==1.2.2
     # via pytest-freezegun
-h11==0.12.0
+h11==0.14.0
     # via httpcore
-httpcore==0.15.0
+httpcore==0.16.2
     # via httpx
-httpx==0.23.0
+httpx==0.23.1
     # via
     #   pytest-httpx
     #   tinkoff-diadoc (pyproject.toml)
@@ -131,18 +130,16 @@ idna==3.4
     #   rfc3986
 iniconfig==1.1.1
     # via pytest
-ipython==8.6.0
+ipython==8.7.0
     # via tinkoff-diadoc (pyproject.toml)
 isort==5.10.1
     # via flake8-isort
-jedi==0.18.1
+jedi==0.18.2
     # via ipython
 matplotlib-inline==0.1.6
     # via ipython
 mccabe==0.7.0
     # via flake8
-mixer==7.2.2
-    # via tinkoff-diadoc (pyproject.toml)
 mypy==0.991
     # via tinkoff-diadoc (pyproject.toml)
 mypy-extensions==0.4.3
@@ -165,7 +162,7 @@ pluggy==1.0.0
     # via pytest
 ply==3.11
     # via dotenv-linter
-prompt-toolkit==3.0.32
+prompt-toolkit==3.0.33
     # via ipython
 ptyprocess==0.7.0
     # via pexpect
@@ -185,14 +182,11 @@ pyparsing==3.0.9
 pytest==7.2.0
     # via
     #   pytest-deadfixtures
-    #   pytest-env
     #   pytest-freezegun
     #   pytest-httpx
     #   pytest-mock
     #   pytest-randomly
 pytest-deadfixtures==2.2.1
-    # via tinkoff-diadoc (pyproject.toml)
-pytest-env==0.8.1
     # via tinkoff-diadoc (pyproject.toml)
 pytest-freezegun==0.4.2
     # via tinkoff-diadoc (pyproject.toml)
@@ -203,14 +197,14 @@ pytest-mock==3.10.0
 pytest-randomly==3.12.0
     # via tinkoff-diadoc (pyproject.toml)
 python-dateutil==2.8.2
-    # via
-    #   faker
-    #   freezegun
+    # via freezegun
 python-dotenv==0.21.0
     # via tinkoff-diadoc (pyproject.toml)
 rfc3986[idna2008]==1.5.0
     # via httpx
 schedule==1.1.0
+    # via tinkoff-diadoc (pyproject.toml)
+sentry-sdk==1.11.1
     # via tinkoff-diadoc (pyproject.toml)
 six==1.16.0
     # via
@@ -221,7 +215,7 @@ sniffio==1.3.0
     #   anyio
     #   httpcore
     #   httpx
-stack-data==0.6.1
+stack-data==0.6.2
     # via ipython
 tomli==2.0.1
     # via
@@ -230,7 +224,7 @@ tomli==2.0.1
     #   flake8-pyproject
     #   mypy
     #   pytest
-traitlets==5.5.0
+traitlets==5.6.0
     # via
     #   ipython
     #   matplotlib-inline
@@ -239,6 +233,8 @@ typing-extensions==4.4.0
     #   dotenv-linter
     #   flake8-pie
     #   mypy
+urllib3==1.26.13
+    # via sentry-sdk
 wcwidth==0.2.5
     # via prompt-toolkit
 
