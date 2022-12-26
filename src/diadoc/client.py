@@ -45,10 +45,11 @@ class DiadocClient:
         organizations: list[DiadocOrganization] = self.http.get("GetOrganizationsByInnKpp", params=params)["Organizations"]  # type: ignore
         return DiadocPartner.from_organization_list(organizations)
 
-    def acquire_counteragent(self, diadoc_id: DiadocId, message: str | None = None) -> DiadocTaskId:
+    def acquire_counteragent(self, my_diadoc_id: DiadocId, diadoc_id: DiadocId, message: str | None = None) -> DiadocTaskId:
+        params = {"myOrgId": my_diadoc_id}
         payload = {"OrgId": diadoc_id}
 
         if message:
             payload["MessageToCounteragent"] = message
 
-        return self.http.post("V2/AcquireCounteragent", payload=payload)["TaskId"]  # type: ignore
+        return self.http.post("V2/AcquireCounteragent", params=params, payload=payload)["TaskId"]  # type: ignore

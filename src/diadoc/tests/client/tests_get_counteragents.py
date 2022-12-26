@@ -7,18 +7,6 @@ from diadoc.models import PartnershipStatus
 
 
 @pytest.fixture
-def my_organization():
-    return DiadocPartner(
-        name="Пивзавод",
-        inn="771245768212",
-        kpp=None,
-        diadoc_id="75fcac12-ec63-4cdd-9076-87a8a2e6e8ba",
-        is_active=True,
-        is_roaming=False,
-    )
-
-
-@pytest.fixture
 def page_one(get_diadoc_fixture):
     return get_diadoc_fixture("GetCounteragents_page_one.json")
 
