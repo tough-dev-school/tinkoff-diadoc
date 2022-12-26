@@ -69,9 +69,9 @@ class TinkoffToDiadoc:
 
         return to_invite
 
-    def send_invites(self, partners: list[DiadocPartner]) -> None:
+    def send_invites(self, my_company: DiadocPartner, partners: list[DiadocPartner]) -> None:
         for partner in partners:
-            self.diadoc.acquire_counteragent(diadoc_id=partner.diadoc_id, message=self.message_to_acquire)
+            self.diadoc.acquire_counteragent(my_company.diadoc_id, partner.diadoc_id, self.message_to_acquire)
 
     def act(self) -> None:
         counteragents = self.get_counteragents(self.my_company)
@@ -82,4 +82,4 @@ class TinkoffToDiadoc:
         partners_from_payers = self.get_distinct_partners_from_payers(payers_not_in_partners)
         partners_to_invite = self.exclude_partners_not_needed_to_invite(partners_from_payers, counteragents)
 
-        self.send_invites(partners_to_invite)
+        self.send_invites(self.my_company, partners_to_invite)
