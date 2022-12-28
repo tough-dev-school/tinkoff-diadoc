@@ -1,4 +1,3 @@
-import os
 import time
 
 import schedule
@@ -16,7 +15,7 @@ if __name__ == "__main__":
     init_sentry()
 
     send_invites_to_diadoc()
-    schedule.every().day.at(os.getenv("AT", "09:30")).do(send_invites_to_diadoc)
+    schedule.every().hour.do(send_invites_to_diadoc)
 
     while True:
         schedule.run_pending()
