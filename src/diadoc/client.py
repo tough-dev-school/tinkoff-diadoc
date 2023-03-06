@@ -1,9 +1,11 @@
+from sentry_sdk import capture_exception
+
+from diadoc.exceptions import DiadocHTTPException
 from diadoc.http import DiadocHTTP
 from diadoc.models import DiadocPartner
 from diadoc.types import DiadocCounteragent
 from diadoc.types import DiadocId
 from diadoc.types import DiadocOrganization
-from diadoc.types import DiadocTaskId
 
 
 class DiadocClient:
@@ -45,11 +47,14 @@ class DiadocClient:
         organizations: list[DiadocOrganization] = self.http.get("GetOrganizationsByInnKpp", params=params)["Organizations"]  # type: ignore
         return DiadocPartner.from_organization_list(organizations)
 
-    def acquire_counteragent(self, my_diadoc_id: DiadocId, diadoc_id: DiadocId, message: str | None = None) -> DiadocTaskId:
+    def acquire_counteragent(self, my_diadoc_id: DiadocId, diadoc_id: DiadocId, message: str | None = None) -> None:
         params = {"myOrgId": my_diadoc_id}
         payload = {"OrgId": diadoc_id}
 
         if message:
             payload["MessageToCounteragent"] = message
 
-        return self.http.post("V2/AcquireCounteragent", params=params, payload=payload)["TaskId"]  # type: ignore
+        try:
+            self.http.post("V2/AcquireCounteragent", params=params, payload=payload)
+        except DiadocHTTPException as exception:
+            capture_exception(exception)
