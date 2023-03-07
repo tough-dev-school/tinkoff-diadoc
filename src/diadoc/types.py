@@ -1,7 +1,6 @@
 from typing import Literal, TypeAlias, TypedDict
 
 DiadocId: TypeAlias = str
-DiadocTaskId: TypeAlias = str
 
 
 class DiadocOrganization(TypedDict):
