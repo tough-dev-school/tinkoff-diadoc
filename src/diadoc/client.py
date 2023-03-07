@@ -56,5 +56,5 @@ class DiadocClient:
 
         try:
             self.http.post("V2/AcquireCounteragent", params=params, payload=payload)
-        except DiadocHTTPException as exception:
+        except DiadocHTTPException as exception:  # do not fail on HTTP errors, just send them to sentry
             capture_exception(exception)
