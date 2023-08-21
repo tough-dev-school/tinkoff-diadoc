@@ -5,17 +5,18 @@ install-deps: deps
 	pip-sync requirements.txt
 
 deps:
-	pip-compile --resolver=backtracking --output-file=requirements.txt pyproject.toml
+	pip-compile --strip-extras --output-file=requirements.txt pyproject.toml
 
 dev-deps: deps
-	pip-compile --resolver=backtracking --extra=dev --output-file=dev-requirements.txt pyproject.toml
+	pip-compile --extra=dev --strip-extras --output-file=dev-requirements.txt pyproject.toml
 
 fmt:
+	cd src && autoflake --in-place --remove-all-unused-imports --recursive .
 	cd src && isort .
 	cd src && black .
 
 lint:
-	dotenv-linter .env.example
+	dotenv-linter env.example
 	flake8 src
 	cd src && mypy
 

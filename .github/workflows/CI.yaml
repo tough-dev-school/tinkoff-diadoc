@@ -28,18 +28,19 @@ jobs:
         if: steps.cache-dependencies.outputs.cache-hit != 'true'
         run: |
           python -m venv venv
-          . venv/bin/activate
+          source venv/bin/activate
           pip install --upgrade pip pip-tools
           pip-sync requirements.txt dev-requirements.txt
 
       - name: Run the linter
         run: |
-          . venv/bin/activate
+          source venv/bin/activate
           make lint
 
       - name: Run the tests
         run: |
-          . venv/bin/activate
+          cp env.example src/.env
+          source venv/bin/activate
           make test
 
   build-docker-image:
