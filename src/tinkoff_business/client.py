@@ -2,9 +2,9 @@ from datetime import date
 from datetime import timedelta
 from typing import TYPE_CHECKING
 
-from app.models import BankAccount
 from app.models import LegalEntity
 from tinkoff_business.http import TinkoffBusinessHTTP
+from tinkoff_business.models import TinkoffBankAccount
 
 if TYPE_CHECKING:
     from tinkoff_business.types import TinkoffBankStatement
@@ -23,8 +23,8 @@ class TinkoffBusinessClient:
             kpp=company["requisites"].get("kpp") or None,
         )
 
-    def get_bank_accounts(self) -> list[BankAccount]:
-        return [BankAccount(bank_account["accountNumber"]) for bank_account in self.http.get("/v1/bank-accounts")]  # type: ignore
+    def get_bank_accounts(self) -> list[TinkoffBankAccount]:
+        return [TinkoffBankAccount(bank_account["accountNumber"]) for bank_account in self.http.get("/v4/bank-accounts")]  # type: ignore
 
     def get_payers(
         self,

@@ -1,21 +1,21 @@
 import pytest
 from uuid import uuid4
 
-from app.models import BankAccount
 from app.models import LegalEntity
 from diadoc.models import DiadocPartner
 from diadoc.models import PartnershipStatus
+from tinkoff_business.models import TinkoffBankAccount
 from tinkoff_to_diadoc import TinkoffToDiadoc
 
 
 @pytest.fixture
 def bank_account():
-    return BankAccount(account_number="100500")
+    return TinkoffBankAccount(account_number="100500")
 
 
 @pytest.fixture
 def ya_bank_account():
-    return BankAccount(account_number="900500")
+    return TinkoffBankAccount(account_number="900500")
 
 
 @pytest.fixture

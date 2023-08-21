@@ -2,11 +2,6 @@ from dataclasses import dataclass
 from dataclasses import field
 
 
-@dataclass
-class BankAccount:
-    account_number: str
-
-
 @dataclass(frozen=True)
 class LegalEntity:
     name: str = field(hash=False, compare=False)

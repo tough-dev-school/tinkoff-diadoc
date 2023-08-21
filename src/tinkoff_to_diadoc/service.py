@@ -3,11 +3,11 @@ import os
 
 from dotenv import load_dotenv
 
-from app.models import BankAccount
 from app.models import LegalEntity
 from diadoc.client import DiadocClient
 from diadoc.models import DiadocPartner
 from tinkoff_business.client import TinkoffBusinessClient
+from tinkoff_business.models import TinkoffBankAccount
 from tinkoff_to_diadoc.exceptions import TinkoffToDiadocException
 
 load_dotenv()
@@ -31,13 +31,13 @@ class TinkoffToDiadoc:
         raise TinkoffToDiadocException("Did not find in Diadoc's my organizations same company as in Tinkoff")
 
     @property
-    def bank_accounts(self) -> list[BankAccount]:
+    def bank_accounts(self) -> list[TinkoffBankAccount]:
         return self.tinkoff.get_bank_accounts()
 
     def get_counteragents(self, my_company: DiadocPartner) -> list[DiadocPartner]:
         return self.diadoc.get_counteragents(my_company.diadoc_id)
 
-    def get_recent_distinct_payers(self, bank_accounts: list[BankAccount], my_company: DiadocPartner) -> set[LegalEntity]:
+    def get_recent_distinct_payers(self, bank_accounts: list[TinkoffBankAccount], my_company: DiadocPartner) -> set[LegalEntity]:
         distinct_payers: set[LegalEntity] = set()
 
         for bank_account in bank_accounts:
