@@ -2,11 +2,14 @@ from functools import cached_property
 import os
 
 from dotenv import load_dotenv
+import sentry_sdk
 
 from app.models import LegalEntity
 from diadoc.client import DiadocClient
+from diadoc.exceptions import DiadocHTTPException
 from diadoc.models import DiadocPartner
 from tinkoff_business.client import TinkoffBusinessClient
+from tinkoff_business.exceptions import TinkoffBusinessException
 from tinkoff_business.models import TinkoffBankAccount
 from tinkoff_to_diadoc.exceptions import TinkoffToDiadocException
 
@@ -75,12 +78,15 @@ class TinkoffToDiadoc:
             self.diadoc.acquire_counteragent(my_company.diadoc_id, partner.diadoc_id, self.message_to_acquire)
 
     def act(self) -> None:
-        counteragents = self.get_counteragents(self.my_company)
+        try:
+            counteragents = self.get_counteragents(self.my_company)
 
-        recent_payers = self.get_recent_distinct_payers(self.bank_accounts, self.my_company)
-        payers_not_in_partners = self.exclude_payers_in_partners(recent_payers, counteragents)
+            recent_payers = self.get_recent_distinct_payers(self.bank_accounts, self.my_company)
+            payers_not_in_partners = self.exclude_payers_in_partners(recent_payers, counteragents)
 
-        partners_from_payers = self.get_distinct_partners_from_payers(payers_not_in_partners)
-        partners_to_invite = self.exclude_partners_not_needed_to_invite(partners_from_payers, counteragents)
+            partners_from_payers = self.get_distinct_partners_from_payers(payers_not_in_partners)
+            partners_to_invite = self.exclude_partners_not_needed_to_invite(partners_from_payers, counteragents)
 
-        self.send_invites(self.my_company, partners_to_invite)
+            self.send_invites(self.my_company, partners_to_invite)
+        except (TinkoffBusinessException, DiadocHTTPException) as exc:
+            sentry_sdk.capture_exception(exc)
