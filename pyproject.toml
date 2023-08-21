@@ -1,6 +1,6 @@
 [project]
 name = "tinkoff-diadoc"
-version = "0.1.0-dev"
+version = "0.0.1"
 dependencies = [
     "httpx",
     "python-dotenv",
@@ -21,17 +21,17 @@ dev = [
 
     "black",
 
+    "autoflake==1.7.0",
+
     "dotenv-linter",
 
     "flake8-absolute-import",
-    "flake8-aaa",
     "flake8-black",
     "flake8-bugbear",
     "flake8-cognitive-complexity",
     "flake8-eradicate",
     "flake8-isort",
     "flake8-fixme",
-    "flake8-multiline-containers",
     "flake8-pep3101",
     "flake8-pie",
     "flake8-print",
@@ -83,8 +83,9 @@ line_length = 160
 
 
 [tool.pytest.ini_options]
-python_files=["test*.py"]
-testpaths=["tests"]
-filterwarnings=[
+pythonpath = "src"
+python_files = ["test*.py"]
+testpaths = ["tests"]
+filterwarnings = [
     "ignore:distutils Version classes are deprecated. Use packaging.version instead.:DeprecationWarning:pytest_freezegun:17",
 ]
