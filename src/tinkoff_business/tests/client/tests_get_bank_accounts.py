@@ -16,7 +16,7 @@ def mock_tinkoff_response(httpx_mock, bank_accounts_json):
 def test_http_get_method_used(client, mock_http_get):
     client.get_bank_accounts()
 
-    mock_http_get.assert_called_once_with("bank-accounts")
+    mock_http_get.assert_called_once_with("/v1/bank-accounts")
 
 
 def test_returns_bank_accounts(client, mock_tinkoff_response):

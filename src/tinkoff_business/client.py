@@ -16,7 +16,7 @@ class TinkoffBusinessClient:
         self.http = TinkoffBusinessHTTP()
 
     def get_company(self) -> LegalEntity:
-        company: TinkoffCompany = self.http.get("company")  # type: ignore
+        company: TinkoffCompany = self.http.get("/v1/company")  # type: ignore
         return LegalEntity(
             name=company["name"],
             inn=company["requisites"]["inn"],
@@ -24,7 +24,7 @@ class TinkoffBusinessClient:
         )
 
     def get_bank_accounts(self) -> list[BankAccount]:
-        return [BankAccount(bank_account["accountNumber"]) for bank_account in self.http.get("bank-accounts")]  # type: ignore
+        return [BankAccount(bank_account["accountNumber"]) for bank_account in self.http.get("/v1/bank-accounts")]  # type: ignore
 
     def get_payers(
         self,
@@ -49,7 +49,7 @@ class TinkoffBusinessClient:
             "till": till_date.strftime("%Y-%m-%d"),
         }
 
-        bank_statement: TinkoffBankStatement = self.http.get("bank-statement", params=params)  # type: ignore
+        bank_statement: TinkoffBankStatement = self.http.get("/v1/bank-statement", params=params)  # type: ignore
         return [
             LegalEntity(
                 name=operation["payerName"],

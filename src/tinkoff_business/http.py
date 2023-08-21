@@ -14,7 +14,7 @@ load_dotenv()
 
 
 class TinkoffBusinessHTTP:
-    base_url: ClassVar[str] = "https://business.tinkoff.ru/openapi/api/v1/"
+    base_url: ClassVar[str] = "https://business.tinkoff.ru/openapi/api/"
 
     @cached_property
     def headers(self) -> dict[str, str]:

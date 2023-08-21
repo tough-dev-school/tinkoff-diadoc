@@ -19,7 +19,7 @@ def test_http_get_method_called_with_params(client, mock_http_get):
     client.get_payers("100400", from_date=date(2022, 9, 1), till_date=date(2022, 10, 11))
 
     mock_http_get.assert_called_once_with(
-        "bank-statement",
+        "/v1/bank-statement",
         params={
             "accountNumber": "100400",
             "from": "2022-09-01",
@@ -33,7 +33,7 @@ def test_by_default_requests_bank_statement_from_yesterday_till_today(client, mo
     client.get_payers("100990")  # no `from_date` and `till_date` provided
 
     mock_http_get.assert_called_once_with(
-        "bank-statement",
+        "/v1/bank-statement",
         params={
             "accountNumber": "100990",
             "from": "2022-11-08",

@@ -12,7 +12,7 @@ def mock_tinkoff_response(httpx_mock):
 def test_http_get_method_used(client, mock_http_get):
     client.get_company()
 
-    mock_http_get.assert_called_once_with("company")
+    mock_http_get.assert_called_once_with("/v1/company")
 
 
 def test_get_company(client, mock_tinkoff_response, company_json):
