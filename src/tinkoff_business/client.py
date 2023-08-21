@@ -48,5 +48,5 @@ class TinkoffBusinessClient:
                 kpp=operation["payer"].get("kpp"),
             )
             for operation in statement["operations"]
-            if "inn" in operation["payer"]
+            if "payer" in operation and "inn" in operation["payer"]
         ]

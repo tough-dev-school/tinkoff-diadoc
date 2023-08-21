@@ -21,7 +21,7 @@ class TinkoffPayer(TypedDict):
 
 class TinkoffOperation(TypedDict):
     operationId: str
-    payer: TinkoffPayer
+    payer: NotRequired[TinkoffPayer]
 
 
 class TinkoffStatement(TypedDict):
