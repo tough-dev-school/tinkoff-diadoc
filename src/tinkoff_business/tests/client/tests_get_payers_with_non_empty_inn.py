@@ -17,6 +17,12 @@ def mock_tinkoff_response(httpx_mock, bank_statement_json):
 
 
 @pytest.fixture
+def bank_statement_without_payer(bank_statement_json):
+    bank_statement_json["operations"][0].pop("payer")
+    return bank_statement_json
+
+
+@pytest.fixture
 def bank_statement_payer_empty_inn(bank_statement_json):
     bank_statement_json["operations"][0]["payer"].pop("inn")
     return bank_statement_json
@@ -53,6 +59,14 @@ def test_get_payers_with_non_empty_inn_return_legal_entiry(client, mock_tinkoff_
     got = client.get_payers_with_non_empty_inn("100500")
 
     assert got == [LegalEntity(name="ИП Котиков Александр Михайлович", inn="17499237465", kpp=None)]
+
+
+def test_skip_operations_without_payer(client, mock_tinkoff_response, bank_statement_without_payer):
+    mock_tinkoff_response(json=bank_statement_without_payer)
+
+    got = client.get_payers_with_non_empty_inn("100500")
+
+    assert got == []
 
 
 def test_do_not_include_payers_with_empty_inn(client, mock_tinkoff_response, bank_statement_payer_empty_inn):
