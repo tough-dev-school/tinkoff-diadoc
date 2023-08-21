@@ -1,5 +1,6 @@
-from datetime import date
+from datetime import datetime
 from datetime import timedelta
+from datetime import timezone
 from typing import TYPE_CHECKING
 
 from app.models import LegalEntity
@@ -7,8 +8,8 @@ from tinkoff_business.http import TinkoffBusinessHTTP
 from tinkoff_business.models import TinkoffBankAccount
 
 if TYPE_CHECKING:
-    from tinkoff_business.types import TinkoffBankStatement
-    from tinkoff_business.types import TinkoffCompany
+    from tinkoff_business.types import TinkoffMyCompany
+    from tinkoff_business.types import TinkoffStatement
 
 
 class TinkoffBusinessClient:
@@ -16,7 +17,7 @@ class TinkoffBusinessClient:
         self.http = TinkoffBusinessHTTP()
 
     def get_company(self) -> LegalEntity:
-        company: TinkoffCompany = self.http.get("/v1/company")  # type: ignore
+        company: TinkoffMyCompany = self.http.get("/v1/company")  # type: ignore
         return LegalEntity(
             name=company["name"],
             inn=company["requisites"]["inn"],
@@ -26,36 +27,26 @@ class TinkoffBusinessClient:
     def get_bank_accounts(self) -> list[TinkoffBankAccount]:
         return [TinkoffBankAccount(bank_account["accountNumber"]) for bank_account in self.http.get("/v4/bank-accounts")]  # type: ignore
 
-    def get_payers(
-        self,
-        account_number: str,
-        from_date: date | None = None,
-        till_date: date | None = None,
-        exclude_payer_inn: str | None = None,
-    ) -> list[LegalEntity]:
-        """Get payers from 'bank-statement' API.
+    def get_payers_with_non_empty_inn(self, account_number: str, from_date: datetime | None = None) -> list[LegalEntity]:
+        """Get payers with non empty inn from 'statement' API.
 
-        If 'exclude_payer_inn' provided the return excludes operations were 'exclude_payer_inn' is payer.
-
-        If `till_date` is not provided today will be used.
-        If `from_date` is not provided `till_date` - 1day will be used.
+        If 'from_date' is not provided 'now()' - 1day will be used.
+        * Payer may not have an inn if it is a non-russian counteragent.
         """
-        till_date = till_date or date.today()
-        from_date = from_date or (till_date - timedelta(days=1))
+        from_date = from_date.astimezone(timezone.utc) if from_date else datetime.now(timezone.utc) - timedelta(days=1)
 
         params = {
             "accountNumber": account_number,
-            "from": from_date.strftime("%Y-%m-%d"),
-            "till": till_date.strftime("%Y-%m-%d"),
+            "from": from_date.strftime("%Y-%m-%dT%H:%M:%SZ"),
         }
 
-        bank_statement: TinkoffBankStatement = self.http.get("/v1/bank-statement", params=params)  # type: ignore
+        statement: TinkoffStatement = self.http.get("/v1/statement", params=params)  # type: ignore
         return [
             LegalEntity(
-                name=operation["payerName"],
-                inn=operation["payerInn"],
-                kpp=operation.get("payerKpp"),
+                name=operation["payer"]["name"],
+                inn=operation["payer"]["inn"],
+                kpp=operation["payer"].get("kpp"),
             )
-            for operation in bank_statement["operation"]
-            if exclude_payer_inn is None or operation["payerInn"] != exclude_payer_inn
+            for operation in statement["operations"]
+            if "inn" in operation["payer"]
         ]

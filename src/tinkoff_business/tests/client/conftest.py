@@ -21,7 +21,7 @@ def bank_accounts_json(get_tinkoff_fixture):
 
 @pytest.fixture
 def bank_statement_json(get_tinkoff_fixture):
-    return get_tinkoff_fixture("bank-statement.json")
+    return get_tinkoff_fixture("statement.json")
 
 
 @pytest.fixture

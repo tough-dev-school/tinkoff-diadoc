@@ -1,25 +1,29 @@
 from typing import NotRequired, TypedDict
 
 
-class TinkoffRequisites(TypedDict):
+class TinkoffMyRequisites(TypedDict):
     fullName: str
     inn: str
     kpp: NotRequired[str]
 
 
-class TinkoffCompany(TypedDict):
+class TinkoffMyCompany(TypedDict):
     name: str
     city: str
-    requisites: TinkoffRequisites
+    requisites: TinkoffMyRequisites
+
+
+class TinkoffPayer(TypedDict):
+    name: str
+    inn: NotRequired[str]
+    kpp: NotRequired[str]
 
 
 class TinkoffOperation(TypedDict):
     operationId: str
-    payerName: str
-    payerInn: str
-    payerKpp: NotRequired[str]
+    payer: TinkoffPayer
 
 
-class TinkoffBankStatement(TypedDict):
-    accountNumber: str
-    operation: list[TinkoffOperation]
+class TinkoffStatement(TypedDict):
+    operations: list[TinkoffOperation]
+    nextCursor: NotRequired[str]

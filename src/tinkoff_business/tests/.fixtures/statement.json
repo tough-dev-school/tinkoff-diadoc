@@ -1,0 +1,78 @@
+{
+    "operations": [
+      {
+        "operationDate": "2022-02-02T20:07:04Z",
+        "operationId": "64be58f9-c7fc-0027-96ba-763ec56a2317",
+        "accountNumber": "40702810510000710417",
+        "bic": "044525974",
+        "typeOfOperation": "Сredit",
+        "category": "fee",
+        "trxnPostDate": "2021-03-29T18:37:02Z",
+        "authorizationDate": "2021-03-29T15:29:15Z",
+        "drawDate": "2022-02-02T20:07:04Z",
+        "chargeDate": "2022-02-02T20:07:04Z",
+        "docDate": "2022-02-02T20:07:04Z",
+        "documentNumber": "175926",
+        "payVo": "payment-order",
+        "vo": "17",
+        "priority": 5,
+        "operationAmount": 484.5,
+        "operationCurrencyDigitalCode": "643",
+        "accountAmount": 484.5,
+        "accountCurrencyDigitalCode": "643",
+        "rubleAmount": 176.54,
+        "description": "Перевод собственных средств на счет. НДС не облагается",
+        "payPurpose": "Оплата услуг по договору 17369058. НДС не облагается",
+        "payer": {
+          "acct": "40702810510000710417",
+          "name": "ИП Котиков Александр Михайлович",
+          "inn": "17499237465",
+          "bicRu": "0044525974",
+          "corAcct": "30102810945250000974"
+        },
+        "receiver": {
+          "acct": "40702810510000710417",
+          "name": "ИП Котиков Александр Михайлович",
+          "inn": "17499237465",
+          "kpp": "0",
+          "bicRu": "044525974",
+          "corAcct": "30102810945250000974"
+        },
+        "counterParty": {
+          "account": "40702810510000710417",
+          "bankBic": "044525974",
+          "bankName": "АО \"ТИНЬКОФФ БАНК\"",
+          "bankSwiftCode": "CHASUS33",
+          "corrAccount": "30002340500001234056",
+          "inn": "366109554501",
+          "kpp": "0",
+          "name": "Межрайонная ИФНС России № 17 по Воронежской области"
+        },
+        "cardNumber": "5534*****6400",
+        "ucid": 1053539419,
+        "mcc": "0010",
+        "merch": {
+          "address": "13 VOLODARSKOGO STR",
+          "city": "MOSCOW",
+          "index": "183038",
+          "country": "RUS",
+          "name": "Tinkoff.cc_trans"
+        },
+        "rrn": "8408475",
+        "acquirerId": "17495726",
+        "tax": {
+          "kbk": "18210302101081013260",
+          "oktmo": "40519000",
+          "payerStatus": "09",
+          "evidence": "ТП",
+          "period": "ГД.00.2021",
+          "nalType": "0",
+          "docNumber": "0",
+          "docDate": "0",
+          "uin": "0",
+          "thirdPartyInn": "366109554501",
+          "thirdPartyKpp": "0"
+        }
+      }
+    ]
+  }
