@@ -2,9 +2,9 @@ from datetime import date
 from datetime import timedelta
 from typing import TYPE_CHECKING
 
-from app.models import BankAccount
 from app.models import LegalEntity
 from tinkoff_business.http import TinkoffBusinessHTTP
+from tinkoff_business.models import TinkoffBankAccount
 
 if TYPE_CHECKING:
     from tinkoff_business.types import TinkoffBankStatement
@@ -16,15 +16,15 @@ class TinkoffBusinessClient:
         self.http = TinkoffBusinessHTTP()
 
     def get_company(self) -> LegalEntity:
-        company: TinkoffCompany = self.http.get("company")  # type: ignore
+        company: TinkoffCompany = self.http.get("/v1/company")  # type: ignore
         return LegalEntity(
             name=company["name"],
             inn=company["requisites"]["inn"],
             kpp=company["requisites"].get("kpp") or None,
         )
 
-    def get_bank_accounts(self) -> list[BankAccount]:
-        return [BankAccount(bank_account["accountNumber"]) for bank_account in self.http.get("bank-accounts")]  # type: ignore
+    def get_bank_accounts(self) -> list[TinkoffBankAccount]:
+        return [TinkoffBankAccount(bank_account["accountNumber"]) for bank_account in self.http.get("/v4/bank-accounts")]  # type: ignore
 
     def get_payers(
         self,
@@ -49,7 +49,7 @@ class TinkoffBusinessClient:
             "till": till_date.strftime("%Y-%m-%d"),
         }
 
-        bank_statement: TinkoffBankStatement = self.http.get("bank-statement", params=params)  # type: ignore
+        bank_statement: TinkoffBankStatement = self.http.get("/v1/bank-statement", params=params)  # type: ignore
         return [
             LegalEntity(
                 name=operation["payerName"],

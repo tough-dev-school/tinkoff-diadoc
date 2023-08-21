@@ -15,7 +15,7 @@ def mock_tinkoff_url(httpx_mock):
     return partial(
         httpx_mock.add_response,
         method="GET",
-        url="https://business.tinkoff.ru/openapi/api/v1/url",
+        url="https://business.tinkoff.ru/openapi/api/url",
         json={"ok": True},
     )
 
@@ -23,11 +23,11 @@ def mock_tinkoff_url(httpx_mock):
 @pytest.mark.parametrize(
     ("url", "expected"),
     [
-        ("/test/get", "https://business.tinkoff.ru/openapi/api/v1/test/get"),
-        ("test/get", "https://business.tinkoff.ru/openapi/api/v1/test/get"),
-        ("test/get/", "https://business.tinkoff.ru/openapi/api/v1/test/get"),
-        ("/test/get/", "https://business.tinkoff.ru/openapi/api/v1/test/get"),
-        ("test/get/?par=val", "https://business.tinkoff.ru/openapi/api/v1/test/get/?par=val"),
+        ("/v1/test/get", "https://business.tinkoff.ru/openapi/api/v1/test/get"),
+        ("v1/test/get", "https://business.tinkoff.ru/openapi/api/v1/test/get"),
+        ("v1/test/get/", "https://business.tinkoff.ru/openapi/api/v1/test/get"),
+        ("/v1/test/get/", "https://business.tinkoff.ru/openapi/api/v1/test/get"),
+        ("v1/test/get/?par=val", "https://business.tinkoff.ru/openapi/api/v1/test/get/?par=val"),
     ],
 )
 def test_format_url(url, expected, http):
@@ -47,21 +47,21 @@ def test_get_method_requests_tinkoff_url_and_receives_data(mock_tinkoff_url, htt
     [
         (
             {"par": "val"},
-            "https://business.tinkoff.ru/openapi/api/v1/test/get?par=val",
+            "https://business.tinkoff.ru/openapi/api/v3/test/get?par=val",
         ),
         (
             {
                 "par": "val",
                 "par2": "val2",
             },
-            "https://business.tinkoff.ru/openapi/api/v1/test/get?par=val&par2=val2",
+            "https://business.tinkoff.ru/openapi/api/v3/test/get?par=val&par2=val2",
         ),
     ],
 )
 def test_get_method_with_query_params_requests_right_url(mock_tinkoff_url, http, query_params, url):
     mock_tinkoff_url(url=url)
 
-    got = http.get("test/get", params=query_params)
+    got = http.get("/v3/test/get", params=query_params)
 
     assert got["ok"] is True
 
