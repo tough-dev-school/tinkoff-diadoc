@@ -46,7 +46,14 @@ class TinkoffToDiadoc:
         for bank_account in bank_accounts:
             distinct_payers.update(self.tinkoff.get_payers_with_non_empty_inn(account_number=bank_account.account_number))
 
-        distinct_payers.discard(my_company)
+        distinct_payers.discard(
+            LegalEntity(
+                name=my_company.name,
+                inn=my_company.inn,
+                kpp=my_company.kpp,
+            )
+        )
+
         return distinct_payers
 
     def exclude_payers_in_partners(self, payers: set[LegalEntity], counteragents: list[DiadocPartner]) -> list[LegalEntity]:
