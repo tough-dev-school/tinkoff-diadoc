@@ -5,8 +5,13 @@ from app.models import LegalEntity
 
 
 @pytest.fixture
-def my_company(partner):
-    return partner
+def my_company(ya_partner):
+    return ya_partner
+
+
+@pytest.fixture
+def get_legal_entity_for_partner():
+    return lambda partner: LegalEntity(name=partner.name, inn=partner.inn, kpp=partner.kpp)
 
 
 @pytest.fixture
@@ -37,8 +42,8 @@ def test_return_distinct_payers(get_distinct_payers, legal_entity, ya_legal_enti
     assert distinct_payers == {legal_entity, ya_legal_entity}  # the return is set that excludes duplicates
 
 
-def test_my_company_is_excluded_from_distinct_payers(get_distinct_payers, legal_entity, my_company, mock_tinkoff_get_payers):
-    mock_tinkoff_get_payers.return_value = [legal_entity, my_company]
+def test_my_company_is_excluded_from_distinct_payers(get_distinct_payers, legal_entity, my_company, get_legal_entity_for_partner, mock_tinkoff_get_payers):
+    mock_tinkoff_get_payers.return_value = [legal_entity, get_legal_entity_for_partner(my_company)]
 
     distinct_payers = get_distinct_payers()
 
