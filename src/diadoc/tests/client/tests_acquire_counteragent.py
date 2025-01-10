@@ -40,7 +40,7 @@ def test_payload_in_request_correct(acquire_counteragent, httpx_mock, mock_diado
     acquire_counteragent(message="Hello everyone!")
 
     request_content = httpx_mock.get_request().content
-    assert request_content == b'{"OrgId": "2c9d3a6d-d8b2-46fc-8bce-af99fc68c575", "MessageToCounteragent": "Hello everyone!"}'
+    assert request_content == b'{"OrgId":"2c9d3a6d-d8b2-46fc-8bce-af99fc68c575","MessageToCounteragent":"Hello everyone!"}'
 
 
 @pytest.mark.parametrize(

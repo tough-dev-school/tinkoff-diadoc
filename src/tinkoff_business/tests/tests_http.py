@@ -80,7 +80,7 @@ def test_post_method_sends_payload_to_tinkoff(mock_tinkoff_url, http, httpx_mock
     http.post("url", payload={"key": "value"})
 
     request_content = httpx_mock.get_request().content
-    assert request_content == b'{"key": "value"}'
+    assert request_content == b'{"key":"value"}'
 
 
 @pytest.mark.parametrize(

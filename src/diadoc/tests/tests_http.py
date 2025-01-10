@@ -81,7 +81,7 @@ def test_getting_token_sent_right_request(http, mock_diadoc_auth_api, httpx_mock
     assert request.headers["Authorization"] == "DiadocAuth ddauth_api_client_id=API-client-id"
     assert request.headers["Content-Type"] == "application/json"
     assert request.headers["Accept"] == "application/json"
-    assert request.content == b'{"login": "diadoc-superman@company.com", "password": "diadoc-super-password"}'
+    assert request.content == b'{"login":"diadoc-superman@company.com","password":"diadoc-super-password"}'
 
 
 def test_token_is_cached(http, mock_diadoc_auth_api, httpx_mock):
@@ -134,7 +134,7 @@ def test_http_methods_send_right_requests(http_authorized, mock_diadoc_url, meth
     assert sent_request.headers["Content-Type"] == "application/json"
     assert sent_request.headers["Accept"] == "application/json"
     assert sent_request.headers["Authorization"] == "DiadocAuth ddauth_api_client_id=API-client-id,ddauth_token=TOKEN"
-    assert sent_request.content == b'{"field_name": "some_value"}'
+    assert sent_request.content == b'{"field_name":"some_value"}'
 
 
 @pytest.mark.parametrize(
