@@ -23,6 +23,7 @@ def my_organization():
         inn="771245768212",
         kpp=None,
         diadoc_id="75fcac12-ec63-4cdd-9076-87a8a2e6e8ba",
+        diadoc_box_id="1ecf0eca-bfe3-4153-96a3-4ee0e72b69ed",
         is_active=True,
         is_roaming=False,
     )

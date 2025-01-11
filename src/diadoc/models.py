@@ -1,9 +1,9 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import Enum
+from typing import Any, Self
 
 from app.models import LegalEntity
-from diadoc.types import DiadocCounteragent
-from diadoc.types import DiadocOrganization
+from diadoc import proto_types
 
 
 class PartnershipStatus(Enum):
@@ -26,10 +26,11 @@ COUNTERAGENT_PARTNERSHIP_STATUS_MAP = {
 
 @dataclass(frozen=True)
 class DiadocPartner(LegalEntity):
-    diadoc_id: str
-    is_active: bool
-    is_roaming: bool
-    diadoc_partnership_status: PartnershipStatus | None = None
+    diadoc_id: str = field(repr=False)
+    diadoc_box_id: str
+    is_active: bool = field(repr=False)
+    is_roaming: bool = field(repr=False)
+    diadoc_partnership_status: PartnershipStatus | None = field(default=None, repr=False)
 
     @property
     def in_partners(self):
@@ -40,26 +41,27 @@ class DiadocPartner(LegalEntity):
         return self.diadoc_partnership_status in [PartnershipStatus.INVITE_WAS_SENT, PartnershipStatus.REJECTED]
 
     @staticmethod
-    def from_organization(organization: DiadocOrganization, partnership_status: PartnershipStatus | None = None) -> "DiadocPartner":
+    def from_organization(organization: proto_types.Organization, partnership_status: PartnershipStatus | None = None) -> "DiadocPartner":
         return DiadocPartner(
             name=organization["ShortName"],
             inn=organization["Inn"],
             kpp=organization["Kpp"] or None,
             diadoc_id=organization["OrgId"],
+            diadoc_box_id=organization["Boxes"][0]["BoxIdGuid"],
             is_active=organization["IsActive"],
             is_roaming=organization["IsRoaming"],
             diadoc_partnership_status=partnership_status,
         )
 
     @classmethod
-    def from_organization_list(cls, organizations: list[DiadocOrganization]) -> list["DiadocPartner"]:
+    def from_organization_list(cls, organizations: list[proto_types.Organization]) -> list[Self]:
         return [cls.from_organization(organization) for organization in organizations]
 
     @classmethod
-    def from_counteragent(cls, counteragent: DiadocCounteragent) -> "DiadocPartner":
+    def from_counteragent(cls, counteragent: proto_types.Counteragent) -> "DiadocPartner":
         partnership_status = COUNTERAGENT_PARTNERSHIP_STATUS_MAP[counteragent["CurrentStatus"]]
         return cls.from_organization(counteragent["Organization"], partnership_status=partnership_status)
 
     @classmethod
-    def from_counteragent_list(cls, counteragents: list[DiadocCounteragent]) -> list["DiadocPartner"]:
+    def from_counteragent_list(cls, counteragents: list[proto_types.Counteragent]) -> list[Self]:
         return [cls.from_counteragent(counteragent) for counteragent in counteragents]
