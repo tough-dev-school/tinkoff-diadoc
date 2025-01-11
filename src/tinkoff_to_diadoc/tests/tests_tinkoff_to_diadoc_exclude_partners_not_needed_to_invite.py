@@ -13,6 +13,7 @@ def not_active_partner():
         inn="7788445533",
         kpp="200500",
         diadoc_id=str(uuid4()),
+        diadoc_box_id=str(uuid4()),
         diadoc_partnership_status=PartnershipStatus.INVITE_SHOULD_BE_SEND,
         is_active=False,
         is_roaming=False,

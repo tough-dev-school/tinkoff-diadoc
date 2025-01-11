@@ -60,7 +60,7 @@ class DiadocClient:
                     message=(
                         "Can't acquire the counteragent. The reason is most likely that there is no roaming with the agent's provider. "
                         f"counteragent={to_acquire}, "
-                        f"message={exc.message}",
+                        f"message={exc.message}"
                     )
                 )
             else:

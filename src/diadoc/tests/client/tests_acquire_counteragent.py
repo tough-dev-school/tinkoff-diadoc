@@ -2,8 +2,9 @@ from contextlib import nullcontext as does_not_raise
 from functools import partial
 import pytest
 import re
-from diadoc.models import DiadocPartner
+
 from diadoc.client import DiadocClient
+from diadoc.models import DiadocPartner
 
 
 @pytest.fixture
@@ -38,7 +39,6 @@ def mock_sentry_capture_message(mocker):
 @pytest.fixture
 def mock_sentry_capture_exc(mocker):
     return mocker.patch("sentry_sdk.capture_exception")
-
 
 
 @pytest.fixture

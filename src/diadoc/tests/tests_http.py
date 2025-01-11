@@ -168,4 +168,4 @@ def test_raise_on_not_json_response(http_authorized, method, http_api_call, mock
         http_api_call(http_authorized)
 
     assert exc_info.value.code == 200
-    assert "JSON decode error" in exc_info.value.message 
+    assert "JSON decode error" in exc_info.value.message

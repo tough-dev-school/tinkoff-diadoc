@@ -1,6 +1,7 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
+from dataclasses import field
 from enum import Enum
-from typing import Any, Self
+from typing import Self
 
 from app.models import LegalEntity
 from diadoc import proto_types
@@ -40,9 +41,9 @@ class DiadocPartner(LegalEntity):
     def invite_not_needed(self):
         return self.diadoc_partnership_status in [PartnershipStatus.INVITE_WAS_SENT, PartnershipStatus.REJECTED]
 
-    @staticmethod
-    def from_organization(organization: proto_types.Organization, partnership_status: PartnershipStatus | None = None) -> "DiadocPartner":
-        return DiadocPartner(
+    @classmethod
+    def from_organization(cls, organization: proto_types.Organization, partnership_status: PartnershipStatus | None = None) -> Self:
+        return cls(
             name=organization["ShortName"],
             inn=organization["Inn"],
             kpp=organization["Kpp"] or None,
@@ -58,7 +59,7 @@ class DiadocPartner(LegalEntity):
         return [cls.from_organization(organization) for organization in organizations]
 
     @classmethod
-    def from_counteragent(cls, counteragent: proto_types.Counteragent) -> "DiadocPartner":
+    def from_counteragent(cls, counteragent: proto_types.Counteragent) -> Self:
         partnership_status = COUNTERAGENT_PARTNERSHIP_STATUS_MAP[counteragent["CurrentStatus"]]
         return cls.from_organization(counteragent["Organization"], partnership_status=partnership_status)
 

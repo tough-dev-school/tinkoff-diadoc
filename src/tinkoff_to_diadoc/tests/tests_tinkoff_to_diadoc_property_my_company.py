@@ -12,6 +12,7 @@ def partner_matched_legal_entity(legal_entity):
         inn=legal_entity.inn,
         kpp=legal_entity.kpp,
         diadoc_id=str(uuid4()),
+        diadoc_box_id=str(uuid4()),
         diadoc_partnership_status=None,
         is_active=True,
         is_roaming=False,
