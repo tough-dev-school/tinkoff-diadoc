@@ -1,4 +1,6 @@
-ARG PYTHON_VERSION
+# Python version must be set explicitly with build args
+ARG PYTHON_VERSION=python-version-not-set
+
 FROM python:${PYTHON_VERSION}-slim-bullseye
 
 ADD requirements.txt /
@@ -8,4 +10,4 @@ WORKDIR /src
 
 ADD src/ .
 
-ENTRYPOINT python entrypoint.py
+ENTRYPOINT ["python", "entrypoint.py"]
