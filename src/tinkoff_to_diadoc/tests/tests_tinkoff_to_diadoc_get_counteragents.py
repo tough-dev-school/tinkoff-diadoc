@@ -25,4 +25,4 @@ def test_return_diadoc_partners(get_counteragents, ya_partner):
 def test_diadoc_client_was_called(get_counteragents, mock_diadoc_get_counteragent, my_company):
     get_counteragents()
 
-    mock_diadoc_get_counteragent.assert_called_with(my_company.diadoc_id)
+    mock_diadoc_get_counteragent.assert_called_with(my_company)

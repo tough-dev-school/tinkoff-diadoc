@@ -38,7 +38,7 @@ class TinkoffToDiadoc:
         return self.tinkoff.get_bank_accounts()
 
     def get_counteragents(self, my_company: DiadocPartner) -> list[DiadocPartner]:
-        return self.diadoc.get_counteragents(my_company.diadoc_id)
+        return self.diadoc.get_counteragents(my_company)
 
     def get_recent_distinct_payers(self, bank_accounts: list[TinkoffBankAccount], my_company: DiadocPartner) -> set[LegalEntity]:
         distinct_payers: set[LegalEntity] = set()
@@ -82,7 +82,7 @@ class TinkoffToDiadoc:
 
     def send_invites(self, my_company: DiadocPartner, partners: list[DiadocPartner]) -> None:
         for partner in partners:
-            self.diadoc.acquire_counteragent(my_company.diadoc_id, partner.diadoc_id, self.message_to_acquire)
+            self.diadoc.acquire_counteragent(my_company, partner, self.message_to_acquire)
 
     def act(self) -> None:
         try:
@@ -91,8 +91,8 @@ class TinkoffToDiadoc:
             recent_payers = self.get_recent_distinct_payers(self.bank_accounts, self.my_company)
             payers_not_in_partners = self.exclude_payers_in_partners(recent_payers, counteragents)
 
-            partners_from_payers = self.get_distinct_partners_from_payers(payers_not_in_partners)
-            partners_to_invite = self.exclude_partners_not_needed_to_invite(partners_from_payers, counteragents)
+            potential_partners_from_payers = self.get_distinct_partners_from_payers(payers_not_in_partners)
+            partners_to_invite = self.exclude_partners_not_needed_to_invite(potential_partners_from_payers, counteragents)
 
             self.send_invites(self.my_company, partners_to_invite)
         except (TinkoffBusinessException, DiadocHTTPException) as exc:

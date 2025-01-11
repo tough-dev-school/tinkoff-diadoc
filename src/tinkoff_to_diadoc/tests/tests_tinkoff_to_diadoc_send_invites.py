@@ -20,6 +20,7 @@ def my_company():
         inn="771245768212",
         kpp=None,
         diadoc_id="75fcac12-ec63-4cdd-9076-87a8a2e6e8ba",
+        diadoc_box_id="1ecf0eca-bfe3-4153-96a3-4ee0e72b69ed",
         is_active=True,
         is_roaming=False,
     )
@@ -35,8 +36,8 @@ def test_call_acquire_counteragent_for_every_partner(send_invites, my_company, p
 
     mock_acquire_counteragent.assert_has_calls(
         calls=[
-            mocker.call(my_company.diadoc_id, partner.diadoc_id, "Давай запартнеримся в Диадок!"),
-            mocker.call(my_company.diadoc_id, ya_partner.diadoc_id, "Давай запартнеримся в Диадок!"),
+            mocker.call(my_company, partner, "Давай запартнеримся в Диадок!"),
+            mocker.call(my_company, ya_partner, "Давай запартнеримся в Диадок!"),
         ],
         any_order=True,
     )

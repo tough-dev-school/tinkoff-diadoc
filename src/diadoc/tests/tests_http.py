@@ -147,8 +147,11 @@ def test_http_methods_send_right_requests(http_authorized, mock_diadoc_url, meth
 def test_raise_on_unexpected_status_code(http_authorized, method, http_api_call, mock_diadoc_url):
     mock_diadoc_url(method=method, status_code=400)
 
-    with pytest.raises(DiadocHTTPException, match="HTTP Error 400"):
+    with pytest.raises(DiadocHTTPException) as exc_info:
         http_api_call(http_authorized)
+
+    assert exc_info.value.code == 400
+    assert "HTTP Error 400" in exc_info.value.message
 
 
 @pytest.mark.parametrize(
@@ -161,5 +164,8 @@ def test_raise_on_unexpected_status_code(http_authorized, method, http_api_call,
 def test_raise_on_not_json_response(http_authorized, method, http_api_call, mock_diadoc_url):
     mock_diadoc_url(method=method, text="not a json")
 
-    with pytest.raises(DiadocHTTPException, match="JSON decode error"):
+    with pytest.raises(DiadocHTTPException) as exc_info:
         http_api_call(http_authorized)
+
+    assert exc_info.value.code == 200
+    assert "JSON decode error" in exc_info.value.message
