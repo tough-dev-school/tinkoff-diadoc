@@ -112,10 +112,16 @@ class DiadocHTTP:
 
     def raise_if_error_occurred(self, response: httpx.Response, expected_status_code: int) -> None:
         if response.status_code != expected_status_code:
-            raise DiadocHTTPException(f"HTTP Error {response.status_code}, fetched url '{response.url}', {response.text}")
+            raise DiadocHTTPException(
+                code=response.status_code,
+                message=f"HTTP Error {response.status_code}, fetched url '{response.url}', {response.text}",
+            )
 
     def get_response_json(self, response: httpx.Response) -> SimpleJSON:
         try:
             return response.json()
         except json.JSONDecodeError as decode_error:
-            raise DiadocHTTPException(f"JSON decode error {decode_error}, fetched url '{response.url}, {response.text}'")
+            raise DiadocHTTPException(
+                code=response.status_code,
+                message=f"JSON decode error {decode_error}, fetched url '{response.url}, {response.text}'",
+            )
